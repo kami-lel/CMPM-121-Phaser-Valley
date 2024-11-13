@@ -4,7 +4,7 @@
 ### Erik Lu / kami-lel:
 ### Haorong Rong / <github>:
 ### Ian Wallace / 14N-W4774c3:
-### Jc Zaragoza / <github>: 
+### Jc Zaragoza / Jzara3115: 
 
 ## Tools and Materials
 ### We intend to use the Phaser3 framework, as we're all familiar with it and it provides some simple options for changing engines partway through the assignment.
