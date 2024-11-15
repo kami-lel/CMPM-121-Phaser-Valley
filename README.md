@@ -1,10 +1,10 @@
 # CMPM-121-Phaser-Valley
 # Devlog Entry - 11/13/2024
 ## Introducing the Team
-### Erik Lu / kami-lel:
-### Haorong Rong / hrong1:
-### Ian Wallace / 14N-W4774c3:
-### Jc Zaragoza / Jzara3115: 
+### Erik Lu / kami-lel: Design Lead
+### Haorong Rong / hrong1: Design Backup Lead
+### Ian Wallace / 14N-W4774c3: Engine Lead
+### Jc Zaragoza / Jzara3115: Tools Lead
 
 ## Tools and Materials
 ### We intend to use the Phaser3 framework, as we're all familiar with it and it provides some simple options for changing engines partway through the assignment.
