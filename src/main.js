@@ -8,9 +8,15 @@ let config = {
     render: {
         pixelArt: true  // prevent pixel art from getting blurred when scaled
     },
+    physics:{
+        default: 'arcade',
+        arcade:{
+            debug: true
+        }
+    },
     width: 1440,
     height: 750,
-    scene: []
+    scene: [ Movement ]
 }
 
 var cursors;
@@ -18,3 +24,4 @@ const SCALE = 2.0;
 var my = {sprite: {}, text: {}};
 
 const game = new Phaser.Game(config);
+let { height, width } = game.config;
