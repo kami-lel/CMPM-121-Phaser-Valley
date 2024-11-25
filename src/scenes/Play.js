@@ -21,10 +21,24 @@ class Play extends Phaser.Scene {
     // update instruction text
     document.getElementById("info").innerHTML =
       "Arrows: move | D: debug (toggle)";
+
+    this.dayCountText = this.add.text(0, 10, "", { fontSize: 15 });
+    this.nextDayButton = this.add.text(0, 30, "Next Day", {
+      fill: "#ffffff",
+      fontSize: "10px",
+    })
+      .setInteractive()
+      .on("pointerdown", () => this.updateDayCountText(++days));
+
+    this.updateDayCountText(days);
   }
 
   update() {
     // make sure we step (ie update) the player's state machine
     this.playerFSM.step();
+  }
+
+  updateDayCountText(days) {
+    this.dayCountText.setText(`Day: ${days}`);
   }
 }
