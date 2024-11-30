@@ -5,9 +5,8 @@
 const config = {
   parent: "phaser-game", // for info text
   type: Phaser.AUTO,
-  width: 400,
-  height: 300,
-  zoom: 2,
+  width: 800,
+  height: 600,
   pixelArt: true,
   physics: {
     default: "arcade",

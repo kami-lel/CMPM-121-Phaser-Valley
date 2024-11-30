@@ -1,44 +1,18 @@
+
 class Play extends Phaser.Scene {
-  constructor() {
-    super("playScene");
+    constructor() {
+      super("playScene");
+    }
+  
+    create() {
+        
+      }
+    
+      createGrid() {
+       
+      }
+    
+      update() {
+      }
   }
-
-  create() {
-    // add new Player to scene (scene, x, y, key, frame, direction)
-    this.player = new Player(this, 200, 150, "player", 0, "down");
-
-    // setup keyboard input
-    this.keys = this.input.keyboard.createCursorKeys();
-
-    // debug key listener (assigned to D key)
-    this.input.keyboard.on("keydown-D", function () {
-      this.physics.world.drawDebug = this.physics.world.drawDebug
-        ? false
-        : true;
-      this.physics.world.debugGraphic.clear();
-    }, this);
-
-    // update instruction text
-    document.getElementById("info").innerHTML =
-      "Arrows: move | D: debug (toggle)";
-
-    this.dayCountText = this.add.text(0, 10, "", { fontSize: 15 });
-    this.nextDayButton = this.add.text(0, 30, "Next Day", {
-      fill: "#ffffff",
-      fontSize: "10px",
-    })
-      .setInteractive()
-      .on("pointerdown", () => this.updateDayCountText(++days));
-
-    this.updateDayCountText(days);
-  }
-
-  update() {
-    // make sure we step (ie update) the player's state machine
-    this.playerFSM.step();
-  }
-
-  updateDayCountText(days) {
-    this.dayCountText.setText(`Day: ${days}`);
-  }
-}
+  

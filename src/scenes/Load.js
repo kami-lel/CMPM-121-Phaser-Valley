@@ -6,37 +6,19 @@ class Load extends Phaser.Scene {
   preload() {
     // load the visual goodz
     this.load.path = "./assets/";
-    this.load.spritesheet("player", "hero-sheet.png", {
-      frameWidth: 32,
-      frameHeight: 32,
+    this.load.spritesheet("player", "mystic_woods_free/sprites/characters/player.png", {
+      frameWidth: 48,
+      frameHeight: 48,
     });
+    this.load.image("land", "land.png");
   }
 
   create() {
-    // player animations (walking)
     this.anims.create({
-      key: "walk-down",
+      key: "idle",
       frameRate: 8,
       repeat: -1,
-      frames: this.anims.generateFrameNumbers("player", { start: 0, end: 3 }),
-    });
-    this.anims.create({
-      key: "walk-right",
-      frameRate: 8,
-      repeat: -1,
-      frames: this.anims.generateFrameNumbers("player", { start: 4, end: 7 }),
-    });
-    this.anims.create({
-      key: "walk-up",
-      frameRate: 8,
-      repeat: -1,
-      frames: this.anims.generateFrameNumbers("player", { start: 8, end: 11 }),
-    });
-    this.anims.create({
-      key: "walk-left",
-      frameRate: 8,
-      repeat: -1,
-      frames: this.anims.generateFrameNumbers("player", { start: 12, end: 15 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 6, end: 11 }),
     });
 
     // proceed once loading completes
