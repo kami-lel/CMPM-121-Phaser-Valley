@@ -46,6 +46,9 @@ class Play extends Phaser.Scene {
             this.updateDayCountText(++days),    // change Day value
             this.updateResoure()               // undate cell resoure
         });
+
+        // show the win conditions
+        this.add.text(width * 0.2, height - 40, "Goal: Earn $100", { fontSize: 36 });
         
         // display player money
         this.playerMoney = this.add.text(width / 1.45, 50, `Money: $${money}`, { fontSize: 24 });
@@ -56,9 +59,9 @@ class Play extends Phaser.Scene {
 
         // sow plant board
         for (let x = 0; x < this.plant.length; x++){
-            this.add.text(width / 1.45, 180 + x * 100, `sow ${this.plant[x].type}`, {
+            this.add.text(width / 1.45, 180 + x * 100, `sow ${this.plant[x].type} $${this.plant[x].cost}`, {
                 fill: "#ffffff",
-                fontSize: "32px",
+                fontSize: "24px",
                 backgroundColor: "#D1C6B4",
             })
             .setInteractive()   // cell function when click
@@ -81,13 +84,15 @@ class Play extends Phaser.Scene {
         this.player.updatePlayer();
         this.updatePlayerState();
         this.updateCellInfo();
+        this.updateMoneyText(money);
     }
 
     sowplant(plantindex){
         const playerCell = this.getPlayerCell();
-        if (playerCell && !playerCell.hasPlant){
+        if (playerCell && !playerCell.hasPlant && money >= this.plant[plantindex].cost){
+            money -= this.plant[plantindex].cost
             playerCell.hasPlant = true;
-            playerCell.growthLevel = 1;
+            playerCell.growthLevel = 0;
             playerCell.plantTpye = plantindex
             playerCell.plantSprite = this.add.sprite(
                 playerCell.rect.x,
@@ -163,7 +168,6 @@ class Play extends Phaser.Scene {
 
     // Find the cell the player is currently located
     getPlayerCell() {
-        
         return this.grid.find(
           (cell) => cell.row === this.player.positionX && cell.col === this.player.positionY
         );
