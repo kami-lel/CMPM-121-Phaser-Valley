@@ -31,7 +31,7 @@ class Play extends Phaser.Scene {
         // create 2d grid
         this.createGrid();
         // create player
-        this.player = new Player(this, 0, 0, "player");
+        this.player = new Player(this, 0, 0, "player").setDepth(3);
         // setup keyboard input
         this.keys = this.input.keyboard.createCursorKeys()
         
@@ -63,7 +63,7 @@ class Play extends Phaser.Scene {
             })
             .setInteractive()   // cell function when click
             .on("pointerdown", () => {  
-                console.log(`sow ${this.plant[x].type}`)
+                this.sowplant(x); 
             });
             this.add.sprite(width / 1.35, 240 + x * 100, this.plant[x].type).setScale(1.3).setFrame(2)
         }
@@ -81,6 +81,22 @@ class Play extends Phaser.Scene {
         this.player.updatePlayer();
         this.updatePlayerState();
         this.updateCellInfo();
+    }
+
+    sowplant(plantindex){
+        const playerCell = this.getPlayerCell();
+        if (playerCell && !playerCell.hasPlant){
+            playerCell.hasPlant = true;
+            playerCell.growthLevel = 1;
+            playerCell.plantTpye = plantindex
+            playerCell.plantSprite = this.add.sprite(
+                playerCell.rect.x,
+                playerCell.rect.y,
+                this.plant[plantindex].type
+            ).setScale(2)
+        }else if (playerCell.hasPlant){
+            console.log("This cell already have a plant")
+        }
     }
 
     // updated day counter
@@ -126,7 +142,8 @@ class Play extends Phaser.Scene {
                 water: 0, 
                 hasPlant: false, 
                 plantTpye: null, 
-                growthLevel: 0
+                growthLevel: 0,
+                plantSprite: null
             });
           }
         }
