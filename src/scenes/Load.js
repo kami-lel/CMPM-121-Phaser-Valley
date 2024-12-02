@@ -10,6 +10,22 @@ class Load extends Phaser.Scene {
       frameWidth: 48,
       frameHeight: 48,
     });
+    this.load.spritesheet("mushroom", "Tiny Swords (Update 010)/spritesheet.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+    this.load.spritesheet("stone", "Tiny Swords (Update 010)/spritesheet (1).png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+    this.load.spritesheet("grass", "Tiny Swords (Update 010)/spritesheet (2).png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+    this.load.spritesheet("pumpkin", "Tiny Swords (Update 010)/spritesheet (3).png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
   }
 
   create() {

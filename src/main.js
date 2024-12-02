@@ -25,3 +25,4 @@ var my = { sprite: {}, text: {} };
 const game = new Phaser.Game(config);
 const { height, width } = game.config;
 let days = 0;
+let money = 10;
