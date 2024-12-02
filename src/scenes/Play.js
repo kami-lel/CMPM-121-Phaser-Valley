@@ -44,7 +44,8 @@ class Play extends Phaser.Scene {
         .setInteractive()   // cell function when click
         .on("pointerdown", () => {  
             this.updateDayCountText(++days),    // change Day value
-            this.updateResoure()               // undate cell resoure
+            this.updateResoure(),               // undate cell resoure
+            this.plantGrow()                    // grow plant
         });
 
         // show the win conditions
@@ -85,6 +86,18 @@ class Play extends Phaser.Scene {
         this.updatePlayerState();
         this.updateCellInfo();
         this.updateMoneyText(money);
+    }
+
+    plantGrow(){
+        this.grid.forEach((cell) => {
+            if (cell.hasPlant && cell.growthLevel <= 1){
+                if (cell.sun >= 1 && cell.water >= 2){
+                    cell.growthLevel++
+                    cell.water -= 2;
+                    cell.plantSprite.setFrame(cell.growthLevel)
+                }
+            }
+        });
     }
 
     sowplant(plantindex){
