@@ -298,6 +298,35 @@ class Play extends Phaser.Scene {
         return bytes.buffer;
     }
 
+    // A save file is comprised of two stacks of ArrayBuffers - Undo and Redo
+    // Each ArrayBuffer is a snapshot of the game state - the one on top of Undo is the current state
+    // The save file is a base64 string of the two stacks, separated by a delimiter
+
+    stackToBase64(stack) {
+        let base64 = "";
+        for (const buffer of stack) {
+          base64 += this.arrayBufferToBase64(buffer);
+        }
+        return base64;
+    }
+
+    base64ToStack(base64) {
+        let stack = [];
+        let buffer = new ArrayBuffer(0);
+        let index = 0;
+        for (let i = 0; i < base64.length; i++) {
+          buffer[index] = base64[i];
+          index++;
+          if (index === buffer.byteLength) {
+            stack.push(buffer);
+            buffer = new ArrayBuffer(0);
+            index = 0;
+          }
+        }
+        return stack;
+    }
+
+    // THESE NEED TO BE ADJUSTED TO SPLIT THE SAVE FILE INTO TWO STACKS
     saveToLocalStorage(buffer, key) {
         const save = arrayBufferToBase64(buffer);
         localStorage.setItem(key, save);
