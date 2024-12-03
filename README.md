@@ -1,5 +1,36 @@
 # CMPM-121-Phaser-Valley
 
+# Devlog Entry F.1 - 12/3/2024
+
+## Requirements
+
+- Character Moves on 2d Grid  
+- - Same as last week  
+- Time Advances Manually  
+- - Same as last week  
+- Proximity-Based Reaping and Sowing  
+- - Same as last week  
+- Grid Cells Have Sun And Water Levels  
+- - Same as last week  
+- Each Plant Has Both a Type and a Growth Level  
+- - Same as last week  
+- Plant Growth is Governed by Simple Spatial Rules  
+- - Same as last week  
+- Scenario is Completed When Some Condition is Satisfied  
+- - Same as last week  
+- Cell Information is Stored as an Array of Structs or a Struct of Arrays  
+- -  Our grid cell information is stored as an array of structs using ArrayBuffers, following the format depicted below.  
+Insert Mermaid Diagram here
+- Infinite Undos and Redos  
+- - Add info here  
+- Multiple Save Files and Autosaving  
+- - Add info here
+
+## Reflection
+
+We determined that Tiled was not necessary to our project, so we have decided to cut it from the project.  In addition, Haorong has been promoted to Design Lead, as Erik has been MIA for the past few weeks.  
+
+
 # Devlog Entry F.0 - 12/3/2024
 
 ## Requirements

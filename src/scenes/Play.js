@@ -45,8 +45,9 @@ class Play extends Phaser.Scene {
         .setInteractive()   // cell function when click
         .on("pointerdown", () => {  
             this.updateDayCountText(++days),    // change Day value
-            this.updateResoure(),               // undate cell resoure
+            this.updateResources(),               // undate cell resoure
             this.plantGrow()                    // grow plant
+            // Save autosave to local storage
         });
 
         // show the win conditions
@@ -84,10 +85,11 @@ class Play extends Phaser.Scene {
         });
 
         // Initial Setup
-        this.updateResoure();
+        this.updateResources();
         this.updatePlayerState();
         this.updateCellInfo()
         this.updateDayCountText(days);
+        // Make autosave and save it to local storage
       }
     
     
@@ -256,7 +258,7 @@ class Play extends Phaser.Scene {
     }
 
     // updated sun and water levels every days
-    updateResoure(){
+    updateResources(){
         this.grid.forEach((cell) => {
             cell.sun = Phaser.Math.Between(0, 5); 
             cell.water += Phaser.Math.Between(0, 3);
@@ -272,6 +274,38 @@ class Play extends Phaser.Scene {
         return this.grid.find(
           (cell) => cell.row === row && cell.col === col
         );
-      }
+    }
+
+    // Saving And Loading
+
+    arrayBufferToBase64(buffer) {
+        let binary = "";
+        let bytes = new Uint8Array(buffer);
+        let len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
+    }
+
+    base64ToArrayBuffer(base64) {
+        let binary_string = window.atob(base64);
+        let len = binary_string.length;
+        let bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    saveToLocalStorage(buffer, key) {
+        const save = arrayBufferToBase64(buffer);
+        localStorage.setItem(key, save);
+    }
+
+    readFromLocalStorage(key) {
+        const save = localStorage.getItem(key);
+        return base64ToArrayBuffer(save);
+    }
 }
   
