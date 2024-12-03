@@ -50,6 +50,7 @@ class Play extends Phaser.Scene {
             this.updateDayCountText(++days),    // change Day value
             this.updateResources(),               // undate cell resoure
             this.plantGrow()                    // grow plant
+            // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
             // Save autosave to local storage
         });
 
@@ -92,6 +93,7 @@ class Play extends Phaser.Scene {
         this.updatePlayerState();
         this.updateCellInfo()
         this.updateDayCountText(days);
+        // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
         // Make autosave and save it to local storage
       }
     
@@ -121,6 +123,7 @@ class Play extends Phaser.Scene {
             plantCell.growthLevel = 0;
             plantCell.plantSprite.destroy();
             plantCell.plantSprite = null;
+            // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
         }
 
     }
@@ -166,6 +169,7 @@ class Play extends Phaser.Scene {
                 playerCell.rect.y,
                 this.plant[plantindex].type
             ).setScale(2)
+            // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
         }else if (playerCell.hasPlant){
             console.log("This cell already have a plant")
         }
@@ -323,6 +327,37 @@ class Play extends Phaser.Scene {
 
     // A new ArrayBuffer is generated every time the player sows a plant, reaps a plant, or presses the Next Day button
     // The new ArrayBuffer is pushed onto the Undo stack
+
+    toArrayBuffer() {
+        const buffer = new ArrayBuffer(55);
+        const view = new DataView(buffer);
+        view.setInt16(0, this.player.positionX, true);
+        view.setInt16(2, this.player.positionY, true);
+        view.setInt16(4, money, true);
+        view.setInt16(6, days, true);
+        for (let i = 0; i < this.grid.length; i++) {
+          const cell = this.grid[i];
+          const cellValue = cell.water * 1000 + cell.sun * 100 + cell.plantTpye * 10 + cell.growthLevel;
+          view.setInt16(8 + i * 2, cellValue, true);
+        }
+        return buffer;
+    }
+
+    fromArrayBuffer(buffer) {
+        const view = new DataView(buffer);
+        this.player.positionX = view.getInt16(0, true);
+        this.player.positionY = view.getInt16(2, true);
+        money = view.getInt16(4, true);
+        days = view.getInt16(6, true);
+        for (let i = 0; i < this.grid.length; i++) {
+          const cellValue = view.getInt16(8 + i * 2, true);
+          const cell = this.grid[i];
+          cell.water = Math.floor(cellValue / 1000);
+          cell.sun = Math.floor(cellValue % 1000 / 100);
+          cell.plantTpye = Math.floor(cellValue % 100 / 10);
+          cell.growthLevel = Math.floor(cellValue % 10);
+        }
+    }
 
     stackToBase64(stack) {
         let base64 = "";
