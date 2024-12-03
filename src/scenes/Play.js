@@ -299,10 +299,10 @@ class Play extends Phaser.Scene {
     }
 
     // An ArrayBuffer is organized as follows:
-    // 0: Player Position
-    // 1-2: Money
-    // 3-4: Days
-    // 5-55: Grid cells, each cell is 2 bytes
+    // 0: "Player Position"
+    // 1-2: "Money"
+    // 3-4: "Days"
+    // 5-54: "Grid cells, each cell is 2 bytes"
 
     // Grid Cell Structure:
     // Grid cells are read as 16-bit integers
