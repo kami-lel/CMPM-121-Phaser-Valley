@@ -26,6 +26,9 @@ class Play extends Phaser.Scene {
             }
         ]
         this.selectCell = null; // player select cell
+
+        this.undoStack = [];
+        this.redoStack = [];
     }
 
     create() {
@@ -318,6 +321,9 @@ class Play extends Phaser.Scene {
     // The game has four save files, using the keys autosave, save1, save2, and save3
     // The game will autosave every time the player clicks the Next Day button
 
+    // A new ArrayBuffer is generated every time the player sows a plant, reaps a plant, or presses the Next Day button
+    // The new ArrayBuffer is pushed onto the Undo stack
+
     stackToBase64(stack) {
         let base64 = "";
         for (const buffer of stack) {
@@ -342,15 +348,18 @@ class Play extends Phaser.Scene {
         return stack;
     }
 
-    // THESE NEED TO BE ADJUSTED TO SPLIT THE SAVE FILE INTO TWO STACKS
-    saveToLocalStorage(buffer, key) {
-        const save = arrayBufferToBase64(buffer);
+    saveToLocalStorage(key) {
+        const undoString = this.stackToBase64(this.undoStack);
+        const redoString = this.stackToBase64(this.redoStack);
+        const save = undoString + "|" + redoString;
         localStorage.setItem(key, save);
     }
 
     readFromLocalStorage(key) {
         const save = localStorage.getItem(key);
-        return base64ToArrayBuffer(save);
+        const [undoString, redoString] = save.split("|");
+        this.undoStack = this.base64ToStack(undoString);
+        this.redoStack = this.base64ToStack(redoString);
     }
 }
   
