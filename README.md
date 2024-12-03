@@ -20,15 +20,22 @@
 - - Same as last week  
 - Cell Information is Stored as an Array of Structs or a Struct of Arrays  
 - -  Our grid cell information is stored as an array of structs using ArrayBuffers, following the format depicted below.  
-Insert Mermaid Diagram here
+
+packet-beta
+title Game State Buffer
+0: "Player Position"
+1-2: "Money"
+3-4: "Days"
+5-54: "Grid cells, each cell is 2 bytes"
+
 - Infinite Undos and Redos  
-- - Add info here  
+- - Undos and Redos are implemented as a pair of stacks.  Sowing and reaping plants and advancing time add a snapshot of the game state to the undo stack in the form of an ArrayBuffer as depicted above.  Pressing the undo button moves the top of the undo stack to the redo stack and loads the game state from the new top of the undo stack.  Pressing the redo button moves the top of the redo stack to the undo stack, then loads from the new top of the undo stack as before.  Adding a new snapshot to the undo stack by any means other than the redo button clears the redo stack.  
 - Multiple Save Files and Autosaving  
-- - Add info here
+- - The game maintains three save files and one autosave in local storage.  The save files are manually saved to using the save button, while the autosave updates whenever the time is advanced.
 
 ## Reflection
 
-We determined that Tiled was not necessary to our project, so we have decided to cut it from the project.  In addition, Haorong has been promoted to Design Lead, as Erik has been MIA for the past few weeks.  
+Add Info Here  
 
 
 # Devlog Entry F.0 - 12/3/2024

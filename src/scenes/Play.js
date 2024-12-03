@@ -29,6 +29,7 @@ class Play extends Phaser.Scene {
 
         this.undoStack = [];
         this.redoStack = [];
+        this.readFromLocalStorage(saveSlot);
     }
 
     create() {
@@ -51,6 +52,8 @@ class Play extends Phaser.Scene {
             this.updateResources(),               // undate cell resoure
             this.plantGrow()                    // grow plant
             // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
+            const nextDayBuffer = this.toArrayBuffer();
+            this.undoStack.push(nextDayBuffer);
             // Save autosave to local storage
         });
 
@@ -93,8 +96,13 @@ class Play extends Phaser.Scene {
         this.updatePlayerState();
         this.updateCellInfo()
         this.updateDayCountText(days);
+
         // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
+        const firstBuffer = this.toArrayBuffer();
+        this.undoStack.push(firstBuffer);
+
         // Make autosave and save it to local storage
+        this.saveToLocalStorage("autosave");
       }
     
     
@@ -123,7 +131,10 @@ class Play extends Phaser.Scene {
             plantCell.growthLevel = 0;
             plantCell.plantSprite.destroy();
             plantCell.plantSprite = null;
+
             // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
+            const reapBuffer = this.toArrayBuffer();
+            this.undoStack.push(reapBuffer);
         }
 
     }
@@ -169,7 +180,8 @@ class Play extends Phaser.Scene {
                 playerCell.rect.y,
                 this.plant[plantindex].type
             ).setScale(2)
-            // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
+            const sowBuffer = this.toArrayBuffer();
+            this.undoStack.push(sowBuffer);
         }else if (playerCell.hasPlant){
             console.log("This cell already have a plant")
         }
@@ -392,6 +404,9 @@ class Play extends Phaser.Scene {
 
     readFromLocalStorage(key) {
         const save = localStorage.getItem(key);
+        if (!save) {
+          return;
+        }
         const [undoString, redoString] = save.split("|");
         this.undoStack = this.base64ToStack(undoString);
         this.redoStack = this.base64ToStack(redoString);

@@ -44,7 +44,39 @@ class SaveMenu extends Phaser.Scene {
     }
 
     create(){
-        //
+        this.saveText = this.add.text(500, 200, "Saves", {
+            fontFamily: 'Arial', 
+            fontSize: '24px', 
+        });
+
+        this.buttonAutosave = this.add.sprite(500, 300, "buttonGraphic").setScale(1.75, 1);
+        this.buttonSave1 = this.add.sprite(500, 400, "buttonGraphic").setScale(1.75, 1);
+        this.buttonSave2 = this.add.sprite(500, 500, "buttonGraphic").setScale(1.75, 1);
+        this.buttonSave3 = this.add.sprite(500, 600, "buttonGraphic").setScale(1.75, 1);
+        this.buttonAutosave.setInteractive();
+        this.buttonSave1.setInteractive();
+        this.buttonSave2.setInteractive();
+        this.buttonSave3.setInteractive();
+        this.autosaveText = this.add.text(470, 290, "Autosave");
+        this.save1Text = this.add.text(470, 390, "Save 1");
+        this.save2Text = this.add.text(470, 490, "Save 2");
+        this.save3Text = this.add.text(470, 590, "Save 3");
+    }
+
+    update(){
+        // Button Handlers
+        this.buttonAutosave.on('pointerdown', () => {
+            this.scene.start("playScene", {saveSlot: "autosave"});
+        });
+        this.buttonSave1.on('pointerdown', () => {
+            this.scene.start("playScene", {saveSlot: "save1"});
+        });
+        this.buttonSave2.on('pointerdown', () => {
+            this.scene.start("playScene", {saveSlot: "save2"});
+        });
+        this.buttonSave3.on('pointerdown', () => {
+            this.scene.start("playScene", {saveSlot: "save3"});
+        });
     }
 }
 
