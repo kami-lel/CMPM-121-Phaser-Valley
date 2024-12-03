@@ -13,7 +13,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // position of the player on grid
     this.positionX = x;
     this.positionY = y;
-    
+
     // set player position
     this.updatePosition(0, 0);
   }
@@ -36,18 +36,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // move left
     if(Phaser.Input.Keyboard.JustDown(left) && this.positionX != 0) {
       this.updatePosition(this.positionX - 1, this.positionY)
+      this.scene.setBorderVisble();
     }
     // move right
     else if (Phaser.Input.Keyboard.JustDown(right) && this.positionX != this.scene.gridConfig.width - 1){
       this.updatePosition(this.positionX + 1, this.positionY)
+      this.scene.setBorderVisble();
     }
     // move up
     else if (Phaser.Input.Keyboard.JustDown(up) && this.positionY != 0){
       this.updatePosition(this.positionX, this.positionY - 1)
+      this.scene.setBorderVisble();
     }
     // move down
     else if (Phaser.Input.Keyboard.JustDown(down) && this.positionY != this.scene.gridConfig.height - 1){
       this.updatePosition(this.positionX, this.positionY + 1)
+      this.scene.setBorderVisble();
     }
   }
 }

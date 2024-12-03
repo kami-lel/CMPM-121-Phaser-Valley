@@ -25,6 +25,7 @@ class Play extends Phaser.Scene {
                 price: 50       // Selling price
             }
         ]
+        this.selectCell = null; // player select cell
     }
 
     create() {
@@ -67,10 +68,20 @@ class Play extends Phaser.Scene {
             })
             .setInteractive()   // cell function when click
             .on("pointerdown", () => {  
-                this.sowplant(x); 
+                this.sowPlant(x); 
             });
             this.add.sprite(width / 1.35, 240 + x * 100, this.plant[x].type).setScale(1.3).setFrame(2)
         }
+
+        this.add.text(width / 1.35, 530, "Reap", {
+            fill: "#ffffff",
+            fontSize: "48px",
+            backgroundColor: "#D1C6B4",
+        })
+        .setInteractive()   // cell function when click
+        .on("pointerdown", () => {  
+            this.reapPlant(); 
+        });
 
         // Initial Setup
         this.updateResoure();
@@ -86,6 +97,39 @@ class Play extends Phaser.Scene {
         this.updatePlayerState();
         this.updateCellInfo();
         this.updateMoneyText(money);
+        if (money >= 100){
+            this.scene.start("winScene");
+        }
+    }
+
+    reapPlant(){
+        let plantCell;
+        if (this.selectCell){
+            plantCell = this.selectCell
+        }else{
+            plantCell = this.foundCell(this.player.positionX, this.player.positionY);
+        }
+        if (plantCell && plantCell.growthLevel <= 2){
+            money += this.plant[plantCell.plantTpye].price;
+            plantCell.hasPlant = false; 
+            plantCell.plantTpye = null; 
+            plantCell.growthLevel = 0;
+            plantCell.plantSprite.destroy();
+            plantCell.plantSprite = null;
+        }
+
+    }
+
+    // if player away from select cell, make select cell null
+    setBorderVisble(){
+        if (this.selectCell){
+            this.selectCell.border.setVisible(false);
+        }
+        if (this.selectCell && this.checkIsNearPlayer(this.selectCell, this.foundCell(this.player.positionX, this.player.positionY))){
+            this.selectCell.border.setVisible(true)
+        }else{
+            this.selectCell = null;
+        }
     }
 
     plantGrow(){
@@ -100,8 +144,13 @@ class Play extends Phaser.Scene {
         });
     }
 
-    sowplant(plantindex){
-        const playerCell = this.getPlayerCell();
+    sowPlant(plantindex){
+        let playerCell 
+        if (this.selectCell){
+            playerCell = this.selectCell
+        }else{
+            playerCell = this.foundCell(this.player.positionX, this.player.positionY);
+        }
         if (playerCell && !playerCell.hasPlant && money >= this.plant[plantindex].cost){
             money -= this.plant[plantindex].cost
             playerCell.hasPlant = true;
@@ -129,12 +178,16 @@ class Play extends Phaser.Scene {
 
     // updated player location
     updatePlayerState(){
-        this.displayPosition.setText(`Player Position: \n (${this.player.positionX}, ${this.player.positionY})`);
+        if (this.selectCell){
+            this.displayPosition.setText(`Select Position: \n (${this.selectCell.row}, ${this.selectCell.col})`);
+        }else{
+            this.displayPosition.setText(`Select Position: \n (${this.player.positionX}, ${this.player.positionY})`);
+        }
     }
 
     // updated cell info (sun & water level)
     updateCellInfo(){
-        const playerCell = this.getPlayerCell();
+        const playerCell = this.foundCell(this.player.positionX, this.player.positionY);
         this.cellInfo.setText(`SunLevel: ${playerCell.sun}\nWaterLevel: ${playerCell.water}`);
     }
 
@@ -151,11 +204,19 @@ class Play extends Phaser.Scene {
                 this.landColor
                 )
                 .setStrokeStyle(3, 0xffffff);
+            const border = this.add.rectangle(
+                cellX, 
+                cellY, 
+                this.gridConfig.size, 
+                this.gridConfig.size, 
+                )
+            .setStrokeStyle(3, 0x000000).setVisible(false).setDepth(3);
             
             this.grid.push({ 
                 row, 
                 col, 
-                rect: cell, 
+                rect: cell,
+                border: border, 
                 sun: 0, 
                 water: 0, 
                 hasPlant: false, 
@@ -163,7 +224,34 @@ class Play extends Phaser.Scene {
                 growthLevel: 0,
                 plantSprite: null
             });
+            cell.setInteractive().on("pointerdown", () => {
+                if (this.selectCell){
+                    this.selectCell.border.setVisible(false);
+                }
+                this.selectCell = this.foundCell(row, col);
+                if (this.checkIsNearPlayer(this.selectCell, this.foundCell(this.player.positionX, this.player.positionY))){
+                    this.selectCell.border.setVisible(true)
+                }else{
+                    this.selectCell = null;
+                }   
+            });
           }
+        }
+    }
+
+    //return ture if cell is near player
+    checkIsNearPlayer(playerCell, selectCell){
+        if (playerCell.row === selectCell.row && playerCell.col === selectCell.col){
+            return true;
+        }else{
+            const differenceX = selectCell.row -playerCell.row;
+            const differenceY = selectCell.col -playerCell.col;
+            if (differenceX <= 1 && differenceX >= -1){
+                if (differenceY <= 1 && differenceY >= -1){
+                    return true
+                } 
+            }
+            return false;
         }
     }
 
@@ -180,9 +268,9 @@ class Play extends Phaser.Scene {
     }
 
     // Find the cell the player is currently located
-    getPlayerCell() {
+    foundCell(row, col) {
         return this.grid.find(
-          (cell) => cell.row === this.player.positionX && cell.col === this.player.positionY
+          (cell) => cell.row === row && cell.col === col
         );
       }
 }
