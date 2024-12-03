@@ -298,9 +298,25 @@ class Play extends Phaser.Scene {
         return bytes.buffer;
     }
 
+    // An ArrayBuffer is organized as follows:
+    // 0: Player Position
+    // 1-2: Money
+    // 3-4: Days
+    // 5-55: Grid cells, each cell is 2 bytes
+
+    // Grid Cell Structure:
+    // Grid cells are read as 16-bit integers
+    // The thousands and ten-thousands digits are the water level
+    // The hundreds digit is the sun level
+    // The tens digit is the plant type
+    // The ones digit is the plant growth level
+
     // A save file is comprised of two stacks of ArrayBuffers - Undo and Redo
     // Each ArrayBuffer is a snapshot of the game state - the one on top of Undo is the current state
     // The save file is a base64 string of the two stacks, separated by a delimiter
+
+    // The game has four save files, using the keys autosave, save1, save2, and save3
+    // The game will autosave every time the player clicks the Next Day button
 
     stackToBase64(stack) {
         let base64 = "";
