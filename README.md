@@ -1,27 +1,59 @@
 # CMPM-121-Phaser-Valley
 
-# Devlog Entry - 11/13/2024
+# Devlog Entry F.0 - 12/3/2024
 
+## Requirements
+
+### Controlled Character Moves Across a 2d Grid
+
+Add info here
+
+### Time Advances Manually
+
+Add info here
+
+### Proximity-Based Reaping and Sowing
+
+Add info here
+
+### Grid Cells Have Sun And Water Levels
+
+Add info here
+
+### Each Plant Has Both a Type and a Growth Level
+
+Add info here
+
+### Plant Growth is Governed by Simple Spatial Rules
+
+Add info here
+
+### Scenario is Completed When Some Condition is Satisfied
+
+Add info here
+
+## Reflection
+
+Add info here
+
+# Devlog Entry - 11/13/2024
 ## Introducing the Team
 
-### Erik Lu / kami-lel: Design Lead
+Erik Lu / kami-lel: Design Lead
 
-### Haorong Rong / hrong1: Design Backup Lead
+Haorong Rong / hrong1: Design Backup Lead
 
-### Ian Wallace / 14N-W4774c3: Engine Lead
+Ian Wallace / 14N-W4774c3: Engine Lead
 
-### Jc Zaragoza / Jzara3115: Tools Lead
+Jc Zaragoza / Jzara3115: Tools Lead
 
 ## Tools and Materials
 
-### We intend to use the Phaser3 framework, as we're all familiar with it and it provides some simple options for changing engines partway through the assignment.
-
-### We will start out working in JavaScript. We all took CMPM 120, so this is nothing new. This allows us to focus on making the game within the remaining time in the course.
-
-### We expect to be using Tiled for some graphical assets and Visual Studio for coding. Again, these are things we're all familiar with, so we can focus on swapping over and making the game instead of getting distracted learning new tools. We may also make use of some open source assets, to minimize the time spent on non-coding tasks.
-
-### We will be swapping to Phaser3 / TypeScript. Some members of the group expressed a dislike of Javascript, so we decided to swap away from it rather than swapping to it.
+We intend to use the Phaser3 framework, as we're all familiar with it and it provides some simple options for changing engines partway through the assignment.
+We will start out working in JavaScript. We all took CMPM 120, so this is nothing new. This allows us to focus on making the game within the remaining time in the course.
+We expect to be using Tiled for some graphical assets and Visual Studio for coding. Again, these are things we're all familiar with, so we can focus on swapping over and making the game instead of getting distracted learning new tools. We may also make use of some open source assets, to minimize the time spent on non-coding tasks.
+We will be swapping to Phaser3 / TypeScript. Some members of the group expressed a dislike of Javascript, so we decided to swap away from it rather than swapping to it.
 
 ## Outlook
 
-### For the most part, we're looking to focus on learning how to handle transitioning from one engine to another, with minimal focus on the added difficulty of learning new tools, frameworks, or languages. We're not taking any particular additional risks or challenges - those are good ways to miss deadlines, and we're in the holiday season.
+For the most part, we're looking to focus on learning how to handle transitioning from one engine to another, with minimal focus on the added difficulty of learning new tools, frameworks, or languages. We're not taking any particular additional risks or challenges - those are good ways to miss deadlines, and we're in the holiday season.
