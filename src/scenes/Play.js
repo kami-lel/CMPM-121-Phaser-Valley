@@ -109,7 +109,7 @@ class Play extends Phaser.Scene {
         }else{
             plantCell = this.foundCell(this.player.positionX, this.player.positionY);
         }
-        if (plantCell && plantCell.growthLevel <= 2){
+        if (plantCell && plantCell.growthLevel >= 2){
             money += this.plant[plantCell.plantTpye].price;
             plantCell.hasPlant = false; 
             plantCell.plantTpye = null; 
