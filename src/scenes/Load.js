@@ -6,6 +6,8 @@ class Load extends Phaser.Scene {
   preload() {
     // load the visual goodz
     this.load.path = "./assets/";
+    this.load.image("titlePage", "Title.png");
+    this.load.image("buttonGraphic", "red.png");
     this.load.spritesheet("player", "mystic_woods_free/sprites/characters/player.png", {
       frameWidth: 48,
       frameHeight: 48,
