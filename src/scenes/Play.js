@@ -10,6 +10,11 @@ class Play extends Phaser.Scene {
         this.grid = []; // Store grid cells
         this.plant = [
             {
+                type: "none",   
+                cost: 0,        // cost to plant it
+                price: 0        // Selling price
+            },
+            {
                 type: "mushroom",
                 cost: 1,         // cost to plant it
                 price: 10       // Selling price
@@ -111,14 +116,14 @@ class Play extends Phaser.Scene {
         
         // display player money
         this.playerMoney = this.add.text(width / 1.45, 50, `Money: $${money}`, { fontSize: 24 });
-        // displaye player position
+        // display player position
         this.displayPosition = this.add.text(width / 1.45, 80, "", { fontSize: 24 });
         // display cell info
         this.cellInfo = this.add.text(width / 1.45, 130, "", { fontSize: 24 });
 
         // sow plant board
-        for (let x = 0; x < this.plant.length; x++){
-            this.add.text(width / 1.45, 180 + x * 100, `sow ${this.plant[x].type} $${this.plant[x].cost}`, {
+        for (let x = 1; x < this.plant.length; x++){
+            this.add.text(width / 1.45, 180 + (x-1) * 100, `sow ${this.plant[x].type} $${this.plant[x].cost}`, {
                 fill: "#ffffff",
                 fontSize: "24px",
                 backgroundColor: "#D1C6B4",
@@ -127,7 +132,7 @@ class Play extends Phaser.Scene {
             .on("pointerdown", () => {  
                 this.sowPlant(x); 
             });
-            this.add.sprite(width / 1.35, 240 + x * 100, this.plant[x].type).setScale(1.3).setFrame(2)
+            this.add.sprite(width / 1.35, 240 + (x-1) * 100, this.plant[x].type).setScale(1.3).setFrame(2)
         }
 
         this.add.text(width / 1.35, 530, "Reap", {
@@ -176,7 +181,7 @@ class Play extends Phaser.Scene {
         if (plantCell && plantCell.growthLevel >= 2){
             money += this.plant[plantCell.plantType].price;
             plantCell.hasPlant = false; 
-            plantCell.plantType = null; 
+            plantCell.plantType = 0; 
             plantCell.growthLevel = 0;
             plantCell.plantSprite.destroy();
             plantCell.plantSprite = null;
@@ -290,7 +295,7 @@ class Play extends Phaser.Scene {
                 sun: 0, 
                 water: 0, 
                 hasPlant: false, 
-                plantType: null, 
+                plantType: 0, 
                 growthLevel: 0,
                 plantSprite: null
             });
@@ -406,17 +411,38 @@ class Play extends Phaser.Scene {
 
     fromArrayBuffer(buffer) {
         const view = new DataView(buffer);
-        this.player.positionX = view.getInt16(0, true);
-        this.player.positionY = view.getInt16(2, true);
+        const row = view.getInt16(0, true);
+        const col = view.getInt16(2, true);
+        this.player.updatePosition(row, col);
         money = view.getInt16(4, true);
         days = view.getInt16(6, true);
         for (let i = 0; i < this.grid.length; i++) {
-          const cellValue = view.getInt16(8 + i * 2, true);
-          const cell = this.grid[i];
-          cell.water = Math.floor(cellValue / 1000);
-          cell.sun = Math.floor(cellValue % 1000 / 100);
-          cell.plantType = Math.floor(cellValue % 100 / 10);
-          cell.growthLevel = Math.floor(cellValue % 10);
+            const cellValue = view.getInt16(8 + i * 2, true);
+            const cell = this.grid[i];
+            cell.water = Math.floor(cellValue / 1000);
+            cell.sun = Math.floor(cellValue % 1000 / 100);
+            cell.plantType = Math.floor(cellValue % 100 / 10);
+            // Correcting plant presence / absence
+            if (cell.hasPlant && cell.plantType === 0) {
+                cell.hasPlant = false;
+                cell.plantSprite.destroy();
+                cell.plantSprite = null;
+            }
+            if (cell.plantType !== 0) {
+                if (!cell.hasPlant) {
+                    cell.hasPlant = true;
+                    cell.plantSprite = this.add.sprite(
+                        cell.rect.x,
+                        cell.rect.y,
+                        this.plant[cell.plantType].type
+                    ).setScale(2);
+                }
+            }
+            cell.growthLevel = Math.floor(cellValue % 10);
+            // Correcting plant growth level
+            if (cell.hasPlant) {
+                cell.plantSprite.setFrame(cell.growthLevel);
+            }
         }
     }
 
@@ -461,4 +487,5 @@ class Play extends Phaser.Scene {
         this.redoStack = this.base64ToStack(redoString);
     }
 }
+
   
