@@ -153,15 +153,21 @@ class Play extends Phaser.Scene {
             this.reapPlant(); 
         });
 
+        this.updateResources();
+        this.updatePlayerState();
+        this.updateCellInfo()
+        this.updateDayCountText(days);
+    }
+    
+    
+    update() {
+        // load data from local storage, store state in buffer, and autosave
+        // placed here because create() is apparently called several times in parallel for some reason
+        // surely update is at least called sequentially, right?
         if (!this.dataLoaded){
             console.log(`Reading from ${this.saveSlot}`);
             this.readFromLocalStorage(this.saveSlot);
             console.log("Data Read");
-
-            this.updateResources();
-            this.updatePlayerState();
-            this.updateCellInfo()
-            this.updateDayCountText(days);
 
             const firstBuffer = this.toArrayBuffer();
             this.undoStack.push(firstBuffer);
@@ -171,10 +177,7 @@ class Play extends Phaser.Scene {
             console.log("Autosave Complete");
             this.dataLoaded = true;
         }
-    }
-    
-    
-    update() {
+
         // handle player movement
         this.player.updatePlayer();
         this.updatePlayerState();

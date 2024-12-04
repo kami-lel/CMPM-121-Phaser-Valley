@@ -6,6 +6,7 @@ class Title extends Phaser.Scene {
     create (){
         // Title Background
         const backGround = this.add.image(400, 300, "titlePage");
+        this.buttonPressed = false;
 
         // Title
         this.titleText = this.add.text(325, 200, "Phaser Valley", {
@@ -26,9 +27,13 @@ class Title extends Phaser.Scene {
     update (){
         // Button Handlers
         this.buttonPlay.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.start("continueMenuScene");
         });
         this.buttonCredits.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.start("creditsScene");
         });
     }
@@ -44,7 +49,7 @@ class ContinueMenu extends Phaser.Scene {
             fontFamily: 'Arial', 
             fontSize: '24px', 
         });
-
+        this.buttonPressed = false;
         this.buttonAutosave = this.add.sprite(400, 200, "buttonGraphic").setScale(2, 1);
         this.buttonSave1 = this.add.sprite(400, 275, "buttonGraphic").setScale(2, 1);
         this.buttonSave2 = this.add.sprite(400, 350, "buttonGraphic").setScale(2, 1);
@@ -62,15 +67,23 @@ class ContinueMenu extends Phaser.Scene {
     update(){
         // Button Handlers
         this.buttonAutosave.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.start("playScene", {saveSlot: "autosave"});
         });
         this.buttonSave1.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.start("playScene", {saveSlot: "save1"});
         });
         this.buttonSave2.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.start("playScene", {saveSlot: "save2"});
         });
         this.buttonSave3.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.start("playScene", {saveSlot: "save3"});
         });
     }
@@ -86,7 +99,7 @@ class SaveMenu extends Phaser.Scene {
             fontFamily: 'Arial', 
             fontSize: '24px', 
         });
-
+        this.buttonPressed = false;
         this.buttonSave1 = this.add.sprite(400, 200, "buttonGraphic").setScale(2, 1);
         this.buttonSave2 = this.add.sprite(400, 275, "buttonGraphic").setScale(2, 1);
         this.buttonSave3 = this.add.sprite(400, 350, "buttonGraphic").setScale(2, 1);
@@ -104,21 +117,29 @@ class SaveMenu extends Phaser.Scene {
     update(){
         // Button Handlers
         this.buttonSave1.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.get("playScene").saveToLocalStorage("save1");
             this.scene.resume("playScene");
             this.scene.stop();
         });
         this.buttonSave2.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.get("playScene").saveToLocalStorage("save2");
             this.scene.resume("playScene");
             this.scene.stop();
         });
         this.buttonSave3.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.get("playScene").saveToLocalStorage("save3");
             this.scene.resume("playScene");
             this.scene.stop();
         });
         this.buttonBack.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.resume("playScene");
             this.scene.stop();
         });
@@ -135,7 +156,7 @@ class LoadMenu extends Phaser.Scene {
             fontFamily: 'Arial', 
             fontSize: '24px', 
         });
-
+        this.buttonPressed = false;
         this.buttonAutosave = this.add.sprite(400, 200, "buttonGraphic").setScale(2, 1);
         this.buttonSave1 = this.add.sprite(400, 275, "buttonGraphic").setScale(2, 1);
         this.buttonSave2 = this.add.sprite(400, 350, "buttonGraphic").setScale(2, 1);
@@ -156,26 +177,36 @@ class LoadMenu extends Phaser.Scene {
     update(){
         // Button Handlers
         this.buttonAutosave.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.get("playScene").readFromLocalStorage("autosave");
             this.scene.resume("playScene");
             this.scene.stop();
         });
         this.buttonSave1.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.get("playScene").readFromLocalStorage("save1");
             this.scene.resume("playScene");
             this.scene.stop();
         });
         this.buttonSave2.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.get("playScene").readFromLocalStorage("save2");
             this.scene.resume("playScene");
             this.scene.stop();
         });
         this.buttonSave3.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.get("playScene").readFromLocalStorage("save3");
             this.scene.resume("playScene");
             this.scene.stop();
         });
         this.buttonBack.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true
             this.scene.resume("playScene");
             this.scene.stop();
         });
@@ -192,6 +223,7 @@ class Credits extends Phaser.Scene {
             fontFamily: 'Arial',
             align: 'center',
         }
+        this.buttonPressed = false;
     }
 
     create () {
@@ -214,6 +246,8 @@ class Credits extends Phaser.Scene {
     }
     update (){
         this.buttonReturn.on('pointerdown', () => {
+            if (this.buttonPressed) return;
+            this.buttonPressed = true;
             this.scene.start("titleScene");
         });
     }
