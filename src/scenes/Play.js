@@ -57,7 +57,7 @@ class Play extends Phaser.Scene {
             // Save autosave to local storage
         });
 
-        this.undoButton = this.add.text(width / 1.3, 50, "Undo", {
+        this.undoButton = this.add.text(width * 0.075, height - 40, "Undo", {
             fill: "#ffffff",
             fontSize: "32px",
             backgroundColor: "#D1C6B4",
@@ -70,7 +70,7 @@ class Play extends Phaser.Scene {
             }
         });
 
-        this.redoButton = this.add.text(width / 1.3, 90, "Redo", {
+        this.redoButton = this.add.text(width * 0.625, height - 40, "Redo", {
             fill: "#ffffff",
             fontSize: "32px",
             backgroundColor: "#D1C6B4",
@@ -174,9 +174,9 @@ class Play extends Phaser.Scene {
             plantCell = this.foundCell(this.player.positionX, this.player.positionY);
         }
         if (plantCell && plantCell.growthLevel >= 2){
-            money += this.plant[plantCell.plantTpye].price;
+            money += this.plant[plantCell.plantType].price;
             plantCell.hasPlant = false; 
-            plantCell.plantTpye = null; 
+            plantCell.plantType = null; 
             plantCell.growthLevel = 0;
             plantCell.plantSprite.destroy();
             plantCell.plantSprite = null;
@@ -223,7 +223,7 @@ class Play extends Phaser.Scene {
             money -= this.plant[plantindex].cost
             playerCell.hasPlant = true;
             playerCell.growthLevel = 0;
-            playerCell.plantTpye = plantindex
+            playerCell.plantType = plantindex
             playerCell.plantSprite = this.add.sprite(
                 playerCell.rect.x,
                 playerCell.rect.y,
@@ -290,7 +290,7 @@ class Play extends Phaser.Scene {
                 sun: 0, 
                 water: 0, 
                 hasPlant: false, 
-                plantTpye: null, 
+                plantType: null, 
                 growthLevel: 0,
                 plantSprite: null
             });
@@ -309,7 +309,7 @@ class Play extends Phaser.Scene {
         }
     }
 
-    //return ture if cell is near player
+    //return true if cell is near player
     checkIsNearPlayer(playerCell, selectCell){
         if (playerCell.row === selectCell.row && playerCell.col === selectCell.col){
             return true;
@@ -367,10 +367,10 @@ class Play extends Phaser.Scene {
     }
 
     // An ArrayBuffer is organized as follows:
-    // 0: "Player Position"
-    // 1-2: "Money"
-    // 3-4: "Days"
-    // 5-54: "Grid cells, each cell is 2 bytes"
+    // 0-3: "Player Position"
+    // 4-5: "Money"
+    // 6-7: "Days"
+    // 8-57: "Grid cells, each cell is 2 bytes"
 
     // Grid Cell Structure:
     // Grid cells are read as 16-bit integers
@@ -390,16 +390,16 @@ class Play extends Phaser.Scene {
     // The new ArrayBuffer is pushed onto the Undo stack
 
     toArrayBuffer() {
-        const buffer = new ArrayBuffer(55);
+        const buffer = new ArrayBuffer(58);
         const view = new DataView(buffer);
         view.setInt16(0, this.player.positionX, true);
         view.setInt16(2, this.player.positionY, true);
         view.setInt16(4, money, true);
         view.setInt16(6, days, true);
         for (let i = 0; i < this.grid.length; i++) {
-          const cell = this.grid[i];
-          const cellValue = cell.water * 1000 + cell.sun * 100 + cell.plantTpye * 10 + cell.growthLevel;
-          view.setInt16(8 + i * 2, cellValue, true);
+            const cell = this.grid[i];
+            const cellValue = cell.water * 1000 + cell.sun * 100 + cell.plantType * 10 + cell.growthLevel;
+            view.setInt16(8 + i * 2, cellValue, true);
         }
         return buffer;
     }
@@ -415,7 +415,7 @@ class Play extends Phaser.Scene {
           const cell = this.grid[i];
           cell.water = Math.floor(cellValue / 1000);
           cell.sun = Math.floor(cellValue % 1000 / 100);
-          cell.plantTpye = Math.floor(cellValue % 100 / 10);
+          cell.plantType = Math.floor(cellValue % 100 / 10);
           cell.growthLevel = Math.floor(cellValue % 10);
         }
     }

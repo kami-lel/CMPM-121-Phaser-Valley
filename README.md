@@ -23,10 +23,10 @@
 
 packet-beta
 title Game State Buffer
-0: "Player Position"
-1-2: "Money"
-3-4: "Days"
-5-54: "Grid cells, each cell is 2 bytes"
+0-3: "Player Position"
+4-5: "Money"
+6-7: "Days"
+8-57: "Grid cells, each cell is 2 bytes"
 
 - Infinite Undos and Redos  
 - - Undos and Redos are implemented as a pair of stacks.  Sowing and reaping plants and advancing time add a snapshot of the game state to the undo stack in the form of an ArrayBuffer as depicted above.  Pressing the undo button moves the top of the undo stack to the redo stack and loads the game state from the new top of the undo stack.  Pressing the redo button moves the top of the redo stack to the undo stack, then loads from the new top of the undo stack as before.  Adding a new snapshot to the undo stack by any means other than the redo button clears the redo stack.  
