@@ -39,10 +39,6 @@ class SaveMenu extends Phaser.Scene {
       super("saveMenuScene");
     }
 
-    init(){
-        //
-    }
-
     create(){
         this.saveText = this.add.text(500, 200, "Saves", {
             fontFamily: 'Arial', 
@@ -98,13 +94,14 @@ class Credits extends Phaser.Scene {
             fontSize: '24px', 
             align: 'center',
         });
-        // Text alignment only applies to MULTI-LINE text; revise so all are one object
+        // Credits Text
         this.programCredits = this.add.text(100, 200, "Core Programming by Haorong Rong", this.config);
-        this.assistCredits = this.add.text(100, 250, "Save System by Ian Wallace", this.config);
-        this.acidAssist = this.add.text(100, 300, "Title graphic made with assets from Kenney Assets", this.config);
-        this.animationCredits = this.add.text(100, 350, "Terrain and Character sprites from Mystic Woods pack by Game Endeavor: https://game-endeavor.itch.io/mystic-woods", this.config);
-        this.artCredits = this.add.text(100, 400, "Plant Sprites from Tiny Swords pack by Pixel Frog: https://pixelfrog-assets.itch.io/tiny-swords", this.config);
-        
+        this.saveCredits = this.add.text(100, 250, "Save System by Ian Wallace", this.config);
+        this.titleCredits = this.add.text(100, 300, "Title graphic made with assets from Kenney Assets", this.config);
+        this.terrainCredits = this.add.text(100, 350, "Terrain and Character sprites from Mystic Woods pack by Game Endeavor: https://game-endeavor.itch.io/mystic-woods", this.config);
+        this.plantCredits = this.add.text(100, 400, "Plant Sprites from Tiny Swords pack by Pixel Frog: https://pixelfrog-assets.itch.io/tiny-swords", this.config);
+        this.iconCredits = this.add.text(100, 450, "Save and Load icons by Iconoir Team under MIT License", this.config);
+
         this.buttonReturn = this.add.sprite(400, 560, "buttonGraphic").setScale(1.75, 1);
         this.buttonReturn.setInteractive();
 
