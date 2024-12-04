@@ -57,6 +57,55 @@ class Play extends Phaser.Scene {
             // Save autosave to local storage
         });
 
+        this.undoButton = this.add.text(width / 1.3, 50, "Undo", {
+            fill: "#ffffff",
+            fontSize: "32px",
+            backgroundColor: "#D1C6B4",
+        })
+        .setInteractive()   // cell function when click
+        .on("pointerdown", () => {  
+            if (this.undoStack.length > 1) {
+                this.redoStack.push(this.undoStack.pop());
+                this.fromArrayBuffer(this.undoStack[this.undoStack.length - 1]);
+            }
+        });
+
+        this.redoButton = this.add.text(width / 1.3, 90, "Redo", {
+            fill: "#ffffff",
+            fontSize: "32px",
+            backgroundColor: "#D1C6B4",
+        })
+        .setInteractive()   // cell function when click
+        .on("pointerdown", () => {  
+            if (this.redoStack.length > 0) {
+                this.undoStack.push(this.redoStack.pop());
+                this.fromArrayBuffer(this.undoStack[this.undoStack.length - 1]);
+            }
+        });
+
+        /* -- SAVE AND LOAD BUTTON SHOULD ALLOW FOR SAVING IN MULTIPLE SLOTS
+        this.saveButton = this.add.text(width / 1.3, 130, "Save", {
+            fill: "#ffffff",
+            fontSize: "32px",
+            backgroundColor: "#D1C6B4",
+        })
+        .setInteractive()   // cell function when click
+        .on("pointerdown", () => {  
+            this.saveToLocalStorage(saveSlot);
+        });
+
+        this.loadButton = this.add.text(width / 1.3, 170, "Load", {
+            fill: "#ffffff",
+            fontSize: "32px",
+            backgroundColor: "#D1C6B4",
+        })
+        .setInteractive()   // cell function when click
+        .on("pointerdown", () => {  
+            this.readFromLocalStorage(saveSlot);
+            this.fromArrayBuffer(this.undoStack[this.undoStack.length - 1]);
+        });
+        */
+
         // show the win conditions
         this.add.text(width * 0.2, height - 40, "Goal: Earn $100", { fontSize: 36 });
         
