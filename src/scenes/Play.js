@@ -34,7 +34,7 @@ class Play extends Phaser.Scene {
 
         this.undoStack = [];
         this.redoStack = [];
-        this.readFromLocalStorage(saveSlot);
+        this.saveSlot = data.saveSlot;
     }
 
     create() {
@@ -46,6 +46,8 @@ class Play extends Phaser.Scene {
         this.keys = this.input.keyboard.createCursorKeys()
         
         this.dayCountText = this.add.text(10, 5, "", { fontSize: 36 });
+
+        // Next Day Button
         this.nextDayButton = this.add.text(width / 1.3, 10, "Next Day", {
             fill: "#ffffff",
             fontSize: "32px",
@@ -56,19 +58,19 @@ class Play extends Phaser.Scene {
             this.updateDayCountText(++days),    // change Day value
             this.updateResources(),               // undate cell resoure
             this.plantGrow()                    // grow plant
-            // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
             const nextDayBuffer = this.toArrayBuffer();
             this.undoStack.push(nextDayBuffer);
             this.redoStack = [];
             this.saveToLocalStorage("autosave");
         });
 
+        // Undo and Redo Buttons
         this.undoButton = this.add.text(width * 0.075, height - 40, "Undo", {
             fill: "#ffffff",
             fontSize: "32px",
             backgroundColor: "#D1C6B4",
         })
-        .setInteractive()   // cell function when click
+        .setInteractive()
         .on("pointerdown", () => {  
             if (this.undoStack.length > 1) {
                 this.redoStack.push(this.undoStack.pop());
@@ -81,7 +83,7 @@ class Play extends Phaser.Scene {
             fontSize: "32px",
             backgroundColor: "#D1C6B4",
         })
-        .setInteractive()   // cell function when click
+        .setInteractive()
         .on("pointerdown", () => {  
             if (this.redoStack.length > 0) {
                 this.undoStack.push(this.redoStack.pop());
@@ -89,28 +91,30 @@ class Play extends Phaser.Scene {
             }
         });
 
-        /* -- SAVE AND LOAD BUTTON SHOULD ALLOW FOR SAVING IN MULTIPLE SLOTS
-        this.saveButton = this.add.text(width / 1.3, 130, "Save", {
+        // Save and Load Buttons
+        this.saveButton = this.add.text(width * 0.6, 20, "Save", {
             fill: "#ffffff",
             fontSize: "32px",
             backgroundColor: "#D1C6B4",
         })
-        .setInteractive()   // cell function when click
-        .on("pointerdown", () => {  
-            this.saveToLocalStorage(saveSlot);
+        .setInteractive()
+        .on("pointerdown", () => {
+            this.scene.bringToTop("saveMenuScene");
+            this.scene.pause();
+            this.scene.launch("saveMenuScene");
         });
 
-        this.loadButton = this.add.text(width / 1.3, 170, "Load", {
+        this.loadButton = this.add.text(width * 0.45, 20, "Load", {
             fill: "#ffffff",
             fontSize: "32px",
             backgroundColor: "#D1C6B4",
         })
-        .setInteractive()   // cell function when click
-        .on("pointerdown", () => {  
-            this.readFromLocalStorage(saveSlot);
-            this.fromArrayBuffer(this.undoStack[this.undoStack.length - 1]);
+        .setInteractive()
+        .on("pointerdown", () => {
+            this.scene.bringToTop("loadMenuScene");
+            this.scene.pause();
+            this.scene.launch("loadMenuScene");
         });
-        */
 
         // show the win conditions
         this.add.text(width * 0.2, height - 40, "Goal: Earn $100", { fontSize: 36 });
@@ -146,6 +150,11 @@ class Play extends Phaser.Scene {
             this.reapPlant(); 
         });
 
+        // Load the game state from local storage
+        console.log(`Reading from ${saveSlot}`);
+        this.readFromLocalStorage(saveSlot);
+        console.log("Data Read");
+
         // Initial Setup
         this.updateResources();
         this.updatePlayerState();
@@ -157,8 +166,10 @@ class Play extends Phaser.Scene {
         this.undoStack.push(firstBuffer);
 
         // Make autosave and save it to local storage
+        console.log("Autosaving");
         this.saveToLocalStorage("autosave");
-      }
+        console.log("Autosave Complete");
+    }
     
     
     update() {
@@ -352,8 +363,7 @@ class Play extends Phaser.Scene {
         );
     }
 
-    // Saving And Loading
-
+    // Saving And Loading Functions
     arrayBufferToBase64(buffer) {
         let binary = "";
         let bytes = new Uint8Array(buffer);
@@ -373,29 +383,6 @@ class Play extends Phaser.Scene {
         }
         return bytes.buffer;
     }
-
-    // An ArrayBuffer is organized as follows:
-    // 0-3: "Player Position"
-    // 4-5: "Money"
-    // 6-7: "Days"
-    // 8-57: "Grid cells, each cell is 2 bytes"
-
-    // Grid Cell Structure:
-    // Grid cells are read as 16-bit integers
-    // The thousands and ten-thousands digits are the water level
-    // The hundreds digit is the sun level
-    // The tens digit is the plant type
-    // The ones digit is the plant growth level
-
-    // A save file is comprised of two stacks of ArrayBuffers - Undo and Redo
-    // Each ArrayBuffer is a snapshot of the game state - the one on top of Undo is the current state
-    // The save file is a base64 string of the two stacks, separated by a delimiter
-
-    // The game has four save files, using the keys autosave, save1, save2, and save3
-    // The game will autosave every time the player clicks the Next Day button
-
-    // A new ArrayBuffer is generated every time the player sows a plant, reaps a plant, or presses the Next Day button
-    // The new ArrayBuffer is pushed onto the Undo stack
 
     toArrayBuffer() {
         const buffer = new ArrayBuffer(58);
@@ -474,20 +461,28 @@ class Play extends Phaser.Scene {
     }
 
     saveToLocalStorage(key) {
+        console.log("Saving to local storage");
         const undoString = this.stackToBase64(this.undoStack);
+        console.log("Undo stack length: ", undoString.length);
         const redoString = this.stackToBase64(this.redoStack);
+        console.log("Redo stack length: ", redoString.length);
         const save = undoString + "|" + redoString;
         localStorage.setItem(key, save);
+        console.log("Data saved");
     }
 
     readFromLocalStorage(key) {
+        console.log("Reading from local storage");
         const save = localStorage.getItem(key);
         if (!save) {
-          return;
+            console.log("No save data found");
+            return;
         }
         const [undoString, redoString] = save.split("|");
         this.undoStack = this.base64ToStack(undoString);
+        console.log("Undo stack length: ", this.undoStack.length);
         this.redoStack = this.base64ToStack(redoString);
+        console.log("Redo stack length: ", this.redoStack.length);
     }
 }
 

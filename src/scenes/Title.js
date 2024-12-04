@@ -26,7 +26,7 @@ class Title extends Phaser.Scene {
     update (){
         // Button Handlers
         this.buttonPlay.on('pointerdown', () => {
-            this.scene.start("saveMenuScene");
+            this.scene.start("continueMenuScene");
         });
         this.buttonCredits.on('pointerdown', () => {
             this.scene.start("creditsScene");
@@ -34,13 +34,13 @@ class Title extends Phaser.Scene {
     }
 }
 
-class SaveMenu extends Phaser.Scene {
+class ContinueMenu extends Phaser.Scene {
     constructor() {
-      super("saveMenuScene");
+      super("continueMenuScene");
     }
 
     create(){
-        this.saveText = this.add.text(360, 75, "Saves", {
+        this.saveText = this.add.text(360, 75, "Load Save", {
             fontFamily: 'Arial', 
             fontSize: '24px', 
         });
@@ -76,6 +76,112 @@ class SaveMenu extends Phaser.Scene {
     }
 }
 
+class SaveMenu extends Phaser.Scene {
+    constructor() {
+      super("saveMenuScene");
+    }
+
+    create(){
+        this.saveText = this.add.text(360, 75, "Save Game", {
+            fontFamily: 'Arial', 
+            fontSize: '24px', 
+        });
+
+        this.buttonSave1 = this.add.sprite(400, 200, "buttonGraphic").setScale(2, 1);
+        this.buttonSave2 = this.add.sprite(400, 275, "buttonGraphic").setScale(2, 1);
+        this.buttonSave3 = this.add.sprite(400, 350, "buttonGraphic").setScale(2, 1);
+        this.buttonBack = this.add.sprite(400, 425, "buttonGraphic").setScale(2, 1);
+        this.buttonSave1.setInteractive();
+        this.buttonSave2.setInteractive();
+        this.buttonSave3.setInteractive();
+        this.buttonBack.setInteractive();
+        this.save1Text = this.add.text(370, 190, "Save 1");
+        this.save2Text = this.add.text(370, 265, "Save 2");
+        this.save3Text = this.add.text(370, 340, "Save 3");
+        this.backText = this.add.text(370, 415, "Go Back");
+    }
+
+    update(){
+        // Button Handlers
+        this.buttonSave1.on('pointerdown', () => {
+            this.scene.get("playScene").saveToLocalStorage("save1");
+            this.scene.resume("playScene");
+            this.scene.stop();
+        });
+        this.buttonSave2.on('pointerdown', () => {
+            this.scene.get("playScene").saveToLocalStorage("save2");
+            this.scene.resume("playScene");
+            this.scene.stop();
+        });
+        this.buttonSave3.on('pointerdown', () => {
+            this.scene.get("playScene").saveToLocalStorage("save3");
+            this.scene.resume("playScene");
+            this.scene.stop();
+        });
+        this.buttonBack.on('pointerdown', () => {
+            this.scene.resume("playScene");
+            this.scene.stop();
+        });
+    }
+}
+
+class LoadMenu extends Phaser.Scene {
+    constructor() {
+      super("loadMenuScene");
+    }
+
+    create(){
+        this.saveText = this.add.text(360, 75, "Load Save", {
+            fontFamily: 'Arial', 
+            fontSize: '24px', 
+        });
+
+        this.buttonAutosave = this.add.sprite(400, 200, "buttonGraphic").setScale(2, 1);
+        this.buttonSave1 = this.add.sprite(400, 275, "buttonGraphic").setScale(2, 1);
+        this.buttonSave2 = this.add.sprite(400, 350, "buttonGraphic").setScale(2, 1);
+        this.buttonSave3 = this.add.sprite(400, 425, "buttonGraphic").setScale(2, 1);
+        this.buttonBack = this.add.sprite(400, 500, "buttonGraphic").setScale(2, 1);
+        this.buttonAutosave.setInteractive();
+        this.buttonSave1.setInteractive();
+        this.buttonSave2.setInteractive();
+        this.buttonSave3.setInteractive();
+        this.buttonBack.setInteractive();
+        this.autosaveText = this.add.text(370, 190, "Autosave");
+        this.save1Text = this.add.text(370, 265, "Save 1");
+        this.save2Text = this.add.text(370, 340, "Save 2");
+        this.save3Text = this.add.text(370, 415, "Save 3");
+        this.backText = this.add.text(370, 490, "Go Back");
+    }
+
+    update(){
+        // Button Handlers
+        this.buttonAutosave.on('pointerdown', () => {
+            this.scene.get("playScene").readFromLocalStorage("autosave");
+            this.scene.resume("playScene");
+            this.scene.stop();
+        });
+        this.buttonSave1.on('pointerdown', () => {
+            this.scene.get("playScene").readFromLocalStorage("save1");
+            this.scene.resume("playScene");
+            this.scene.stop();
+        });
+        this.buttonSave2.on('pointerdown', () => {
+            this.scene.get("playScene").readFromLocalStorage("save2");
+            this.scene.resume("playScene");
+            this.scene.stop();
+        });
+        this.buttonSave3.on('pointerdown', () => {
+            this.scene.get("playScene").readFromLocalStorage("save3");
+            this.scene.resume("playScene");
+            this.scene.stop();
+        });
+        this.buttonBack.on('pointerdown', () => {
+            this.scene.resume("playScene");
+            this.scene.stop();
+        });
+    }
+}
+
 class Credits extends Phaser.Scene {
     constructor() {
       super("creditsScene");
@@ -100,7 +206,6 @@ class Credits extends Phaser.Scene {
         this.titleCredits = this.add.text(50, 300, "Title graphic made with assets from Kenney Assets", this.config);
         this.terrainCredits = this.add.text(50, 350, "Terrain and Character sprites from Mystic Woods pack by Game Endeavor:\n https://game-endeavor.itch.io/mystic-woods", this.config);
         this.plantCredits = this.add.text(50, 400, "Plant Sprites from Tiny Swords pack by Pixel Frog:\n https://pixelfrog-assets.itch.io/tiny-swords", this.config);
-        this.iconCredits = this.add.text(50, 450, "Save and Load icons by Iconoir Team under MIT License", this.config);
 
         this.buttonReturn = this.add.sprite(380, 560, "buttonGraphic").setScale(1.75, 1);
         this.buttonReturn.setInteractive();

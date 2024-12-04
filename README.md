@@ -22,12 +22,12 @@
 - -  Our grid cell information is stored as an array of structs using ArrayBuffers, following the format depicted below.  
 
 ```mermaid
-packet-beta;
-title Game State Buffer;
-0-3: "Player Position";
-4-5: "Money";
-6-7: "Days";
-8-57: "Grid cells, each cell is 2 bytes";
+packet-beta
+title Game State Buffer
+0-3: "Player Position"
+4-5: "Money"
+6-7: "Days"
+8-57: "Grid cells, each cell is 2 bytes"
 ```
 
 - - Each cell is represented by a 2 byte integer from 0000 to 10532, organized as follows - the thousands digit represents the cell's water level, the hundreds digit represents the cell's light level, the tens digit represents the index of the plant in the cell, and the ones digit represents the growth stage of the plant.  A 0 in the tens place is interpreted as the absence of a plant.

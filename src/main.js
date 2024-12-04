@@ -15,7 +15,7 @@ const config = {
       debug: true,
     },
   },
-  scene: [Load, Title, SaveMenu, Credits, Play, Win],
+  scene: [Load, Title, ContinueMenu, LoadMenu, SaveMenu, Credits, Play, Win],
 };
 
 var cursors;
@@ -26,4 +26,3 @@ const game = new Phaser.Game(config);
 const { height, width } = game.config;
 let days = 0;
 let money = 10;
-let saveSlot = "autosave";
