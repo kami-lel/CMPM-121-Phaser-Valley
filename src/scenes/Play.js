@@ -59,7 +59,8 @@ class Play extends Phaser.Scene {
             // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
             const nextDayBuffer = this.toArrayBuffer();
             this.undoStack.push(nextDayBuffer);
-            // Save autosave to local storage
+            this.redoStack = [];
+            this.saveToLocalStorage("autosave");
         });
 
         this.undoButton = this.add.text(width * 0.075, height - 40, "Undo", {
@@ -189,6 +190,7 @@ class Play extends Phaser.Scene {
             // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
             const reapBuffer = this.toArrayBuffer();
             this.undoStack.push(reapBuffer);
+            this.redoStack = [];
         }
 
     }
@@ -236,6 +238,7 @@ class Play extends Phaser.Scene {
             ).setScale(2)
             const sowBuffer = this.toArrayBuffer();
             this.undoStack.push(sowBuffer);
+            this.redoStack = [];
         }else if (playerCell.hasPlant){
             console.log("This cell already have a plant")
         }
