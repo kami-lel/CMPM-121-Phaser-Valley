@@ -3,7 +3,7 @@ class Play extends Phaser.Scene {
       super("playScene");
     }
 
-    init() {
+    init(data) {
         // color for the cell 
         this.landColor = 0x926829;
         this.gridConfig = { width: 5, height: 5, size: 100 };
@@ -32,9 +32,12 @@ class Play extends Phaser.Scene {
         ]
         this.selectCell = null; // player select cell
 
+        this.saveSlot = data.saveSlot;
+
         this.undoStack = [];
         this.redoStack = [];
-        this.saveSlot = data.saveSlot;
+
+        this.dataLoaded = false;
     }
 
     create() {
@@ -150,25 +153,24 @@ class Play extends Phaser.Scene {
             this.reapPlant(); 
         });
 
-        // Load the game state from local storage
-        console.log(`Reading from ${saveSlot}`);
-        this.readFromLocalStorage(saveSlot);
-        console.log("Data Read");
+        if (!this.dataLoaded){
+            console.log(`Reading from ${this.saveSlot}`);
+            this.readFromLocalStorage(this.saveSlot);
+            console.log("Data Read");
 
-        // Initial Setup
-        this.updateResources();
-        this.updatePlayerState();
-        this.updateCellInfo()
-        this.updateDayCountText(days);
+            this.updateResources();
+            this.updatePlayerState();
+            this.updateCellInfo()
+            this.updateDayCountText(days);
 
-        // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
-        const firstBuffer = this.toArrayBuffer();
-        this.undoStack.push(firstBuffer);
+            const firstBuffer = this.toArrayBuffer();
+            this.undoStack.push(firstBuffer);
 
-        // Make autosave and save it to local storage
-        console.log("Autosaving");
-        this.saveToLocalStorage("autosave");
-        console.log("Autosave Complete");
+            console.log("Autosaving");
+            this.saveToLocalStorage("autosave");
+            console.log("Autosave Complete");
+            this.dataLoaded = true;
+        }
     }
     
     
