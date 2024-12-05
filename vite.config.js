@@ -1,3 +1,3 @@
 export default {
-  base: Deno.env.get("REPO_NAME") || "/project",
+  base: '/CMPM-121-Phaser-Valley/', // Replace with your repository name
 };
