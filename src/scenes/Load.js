@@ -7,6 +7,10 @@ class Load extends Phaser.Scene {
   preload() {
     // load the visual goodz
     this.load.path = "./assets/";
+    this.load.image("titlePage", "Title.png");
+    this.load.image("buttonGraphic", "red.png");
+    this.load.image("saveIcon", "Iconoir-Team-Iconoir-Save-action-floppy.512.png");
+    this.load.image("loadIcon", "Iconoir-Team-Iconoir-Load-action-floppy.512.png");
     this.load.spritesheet("player", "mystic_woods_free/sprites/characters/player.png", {
       frameWidth: 48,
       frameHeight: 48,
@@ -38,6 +42,6 @@ class Load extends Phaser.Scene {
     });
 
     // proceed once loading completes
-    this.scene.start("playScene");
+    this.scene.start("titleScene");
   }
 }

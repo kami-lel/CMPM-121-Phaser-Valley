@@ -16,7 +16,7 @@ const config = {
       debug: true,
     },
   },
-  scene: [Load, Play, Win],
+  scene: [Load, Title, ContinueMenu, LoadMenu, SaveMenu, Credits, Play, Win],
 };
 
 var cursors;
