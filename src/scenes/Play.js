@@ -4,70 +4,62 @@ class Play extends Phaser.Scene {
     }
 
     init(data) {
-        // color for the cell 
         this.landColor = 0x926829;
         this.gridConfig = { width: 5, height: 5, size: 100 };
-        this.grid = []; // Store grid cells
+        this.grid = [];
         this.plant = [
             {
                 type: "none",   
-                cost: 0,        // cost to plant it
-                price: 0        // Selling price
+                cost: 0,
+                price: 0 ,
             },
             {
                 type: "mushroom",
-                cost: 1,         // cost to plant it
-                price: 10       // Selling price
+                cost: 1,
+                price: 10,
             },
             {
                 type: "grass",
                 cost: 3,
-                price: 25       // Selling price
+                price: 25,
             },
             {
                 type: "pumpkin",
                 cost: 5,
-                price: 50       // Selling price
+                price: 50,
             }
         ]
-        this.selectCell = null; // player select cell
+        this.selectCell = null;
 
         this.saveSlot = data.saveSlot;
 
         this.undoStack = [];
         this.redoStack = [];
-
-        this.dataLoaded = false;
     }
 
     create() {
-        // create 2d grid
         this.createGrid();
-        // create player
         this.player = new Player(this, 0, 0, "player").setDepth(3);
-        // setup keyboard input
         this.keys = this.input.keyboard.createCursorKeys()
         
         this.dayCountText = this.add.text(10, 5, "", { fontSize: 36 });
 
-        // Next Day Button
         this.nextDayButton = this.add.text(width / 1.3, 10, "Next Day", {
             fill: "#ffffff",
             fontSize: "32px",
             backgroundColor: "#D1C6B4",
         })
-        .setInteractive()   // cell function when click
+        .setInteractive()
         .on("pointerdown", () => {  
-            this.updateDayCountText(++days),    // change Day value
-            this.updateResources(),               // undate cell resoure
-            this.plantGrow()                    // grow plant
+            this.updateDayCountText(++days),
+            this.updateResources(),
+            this.plantGrow()
             const nextDayBuffer = this.toArrayBuffer();
             this.undoStack.push(nextDayBuffer);
             this.redoStack = [];
             this.saveToLocalStorage("autosave");
         });
 
-        // Undo and Redo Buttons
         this.undoButton = this.add.text(width * 0.075, height - 40, "Undo", {
             fill: "#ffffff",
             fontSize: "32px",
@@ -94,7 +86,6 @@ class Play extends Phaser.Scene {
             }
         });
 
-        // Save and Load Buttons
         this.saveButton = this.add.text(width * 0.6, 20, "Save", {
             fill: "#ffffff",
             fontSize: "32px",
@@ -122,11 +113,8 @@ class Play extends Phaser.Scene {
         // show the win conditions
         this.add.text(width * 0.2, height - 40, "Goal: Earn $100", { fontSize: 36 });
         
-        // display player money
         this.playerMoney = this.add.text(width / 1.45, 50, `Money: $${money}`, { fontSize: 24 });
-        // display player position
         this.displayPosition = this.add.text(width / 1.45, 80, "", { fontSize: 24 });
-        // display cell info
         this.cellInfo = this.add.text(width / 1.45, 130, "", { fontSize: 24 });
 
         // sow plant board
@@ -136,7 +124,7 @@ class Play extends Phaser.Scene {
                 fontSize: "24px",
                 backgroundColor: "#D1C6B4",
             })
-            .setInteractive()   // cell function when click
+            .setInteractive()
             .on("pointerdown", () => {  
                 this.sowPlant(x); 
             });
@@ -148,39 +136,28 @@ class Play extends Phaser.Scene {
             fontSize: "48px",
             backgroundColor: "#D1C6B4",
         })
-        .setInteractive()   // cell function when click
+        .setInteractive()
         .on("pointerdown", () => {  
             this.reapPlant(); 
         });
+
+        this.readFromLocalStorage(this.saveSlot);
 
         this.updateResources();
         this.updatePlayerState();
         this.updateCellInfo()
         this.updateDayCountText(days);
+
+        const firstBuffer = this.toArrayBuffer();
+        this.undoStack.push(firstBuffer);
+
+        this.saveToLocalStorage("autosave");
     }
     
     
     update() {
-        // load data from local storage, store state in buffer, and autosave
-        // placed here because create() is apparently called several times in parallel for some reason
-        // surely update is at least called sequentially, right?
-        if (!this.dataLoaded){
-            console.log(`Reading from ${this.saveSlot}`);
-            this.readFromLocalStorage(this.saveSlot);
-            console.log("Data Read");
-
-            const firstBuffer = this.toArrayBuffer();
-            this.undoStack.push(firstBuffer);
-
-            console.log("Autosaving");
-            this.saveToLocalStorage("autosave");
-            console.log("Autosave Complete");
-            this.dataLoaded = true;
-        }
-
-        // handle player movement
         this.player.updatePlayer();
-        this.updatePlayerState();
+        this.updatePlayerState(); // maybe move this to payer prefab
         this.updateCellInfo();
         this.updateMoneyText(money);
         if (money >= 100){
@@ -203,7 +180,6 @@ class Play extends Phaser.Scene {
             plantCell.plantSprite.destroy();
             plantCell.plantSprite = null;
 
-            // Make an ArrayBuffer snapshot of the game state and push it onto the Undo stack
             const reapBuffer = this.toArrayBuffer();
             this.undoStack.push(reapBuffer);
             this.redoStack = [];
@@ -235,22 +211,22 @@ class Play extends Phaser.Scene {
         });
     }
 
-    sowPlant(plantindex){
+    sowPlant(plantIndex){
         let playerCell 
         if (this.selectCell){
             playerCell = this.selectCell
         }else{
             playerCell = this.foundCell(this.player.positionX, this.player.positionY);
         }
-        if (playerCell && !playerCell.hasPlant && money >= this.plant[plantindex].cost){
-            money -= this.plant[plantindex].cost
+        if (playerCell && !playerCell.hasPlant && money >= this.plant[plantIndex].cost){
+            money -= this.plant[plantIndex].cost
             playerCell.hasPlant = true;
             playerCell.growthLevel = 0;
-            playerCell.plantType = plantindex
+            playerCell.plantType = plantIndex
             playerCell.plantSprite = this.add.sprite(
                 playerCell.rect.x,
                 playerCell.rect.y,
-                this.plant[plantindex].type
+                this.plant[plantIndex].type
             ).setScale(2)
             const sowBuffer = this.toArrayBuffer();
             this.undoStack.push(sowBuffer);
@@ -260,17 +236,14 @@ class Play extends Phaser.Scene {
         }
     }
 
-    // updated day counter
     updateDayCountText(days) {
         this.dayCountText.setText(`Day: ${days}`);
       }
 
-    // updated money
     updateMoneyText(money) {
         this.playerMoney.setText(`Money: $${money}`);
     }
 
-    // updated player location
     updatePlayerState(){
         if (this.selectCell){
             this.displayPosition.setText(`Select Position: \n (${this.selectCell.row}, ${this.selectCell.col})`);
@@ -279,7 +252,6 @@ class Play extends Phaser.Scene {
         }
     }
 
-    // updated cell info (sun & water level)
     updateCellInfo(){
         const playerCell = this.foundCell(this.player.positionX, this.player.positionY);
         this.cellInfo.setText(`SunLevel: ${playerCell.sun}\nWaterLevel: ${playerCell.water}`);
@@ -306,7 +278,7 @@ class Play extends Phaser.Scene {
                 )
             .setStrokeStyle(3, 0x000000).setVisible(false).setDepth(3);
             
-            this.grid.push({ 
+            this.grid.push({ // make good type defs for this, maybe nest things
                 row, 
                 col, 
                 rect: cell,
@@ -333,7 +305,7 @@ class Play extends Phaser.Scene {
         }
     }
 
-    //return true if cell is near player
+    // move to player prefab
     checkIsNearPlayer(playerCell, selectCell){
         if (playerCell.row === selectCell.row && playerCell.col === selectCell.col){
             return true;
@@ -349,32 +321,30 @@ class Play extends Phaser.Scene {
         }
     }
 
-    // updated sun and water levels every days
     updateResources(){
         this.grid.forEach((cell) => {
             cell.sun = Phaser.Math.Between(0, 5); 
             cell.water += Phaser.Math.Between(0, 3);
-            // set the limit of maximum amount of water 
             if (cell.water >= 10){ 
                 cell.water = 10;
             }
         });
     }
 
-    // Find the cell the player is currently located
     foundCell(row, col) {
         return this.grid.find(
           (cell) => cell.row === row && cell.col === col
         );
     }
 
+    // move to game manager
     // Saving And Loading Functions
     arrayBufferToBase64(buffer) {
-        let binary = "";
+        let binaryString = "";
         let bytes = new Uint8Array(buffer);
         let len = bytes.byteLength;
         for (let i = 0; i < len; i++) {
-          binary += String.fromCharCode(bytes[i]);
+            binaryString += String.fromCharCode(bytes[i]);
         }
         return window.btoa(binary);
     }
@@ -417,7 +387,6 @@ class Play extends Phaser.Scene {
             cell.water = Math.floor(cellValue / 1000);
             cell.sun = Math.floor(cellValue % 1000 / 100);
             cell.plantType = Math.floor(cellValue % 100 / 10);
-            // Correcting plant presence / absence
             if (cell.hasPlant && cell.plantType === 0) {
                 cell.hasPlant = false;
                 cell.plantSprite.destroy();
@@ -434,7 +403,6 @@ class Play extends Phaser.Scene {
                 }
             }
             cell.growthLevel = Math.floor(cellValue % 10);
-            // Correcting plant growth level
             if (cell.hasPlant) {
                 cell.plantSprite.setFrame(cell.growthLevel);
             }
@@ -466,29 +434,19 @@ class Play extends Phaser.Scene {
     }
 
     saveToLocalStorage(key) {
-        console.log("Saving to local storage");
         const undoString = this.stackToBase64(this.undoStack);
-        console.log("Undo stack length: ", undoString.length);
         const redoString = this.stackToBase64(this.redoStack);
-        console.log("Redo stack length: ", redoString.length);
         const save = undoString + "|" + redoString;
         localStorage.setItem(key, save);
-        console.log("Data saved");
     }
 
     readFromLocalStorage(key) {
-        console.log("Reading from local storage");
         const save = localStorage.getItem(key);
         if (!save) {
-            console.log("No save data found");
             return;
         }
         const [undoString, redoString] = save.split("|");
         this.undoStack = this.base64ToStack(undoString);
-        console.log("Undo stack length: ", this.undoStack.length);
         this.redoStack = this.base64ToStack(redoString);
-        console.log("Redo stack length: ", this.redoStack.length);
     }
 }
-
-  
