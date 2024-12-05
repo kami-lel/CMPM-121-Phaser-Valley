@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 class Play extends Phaser.Scene {
     constructor() {
       super("playScene");

@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 // debug with extreme prejudice
 "use strict";
 
