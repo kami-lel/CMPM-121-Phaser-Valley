@@ -1,6 +1,6 @@
 # CMPM-121-Phaser-Valley
 
-# Devlog Entry F.1 - 12/3/2024
+# Devlog Entry F.1 - 12/6/2024
 
 ## Requirements
 
@@ -30,7 +30,7 @@ title Game State Buffer
 8-57: "Grid cells, each cell is 2 bytes"
 ```
 
-- - Each cell is represented by a 2 byte integer from 0000 to 10532, organized as follows - the thousands digit represents the cell's water level, the hundreds digit represents the cell's light level, the tens digit represents the index of the plant in the cell, and the ones digit represents the growth stage of the plant.  A 0 in the tens place is interpreted as the absence of a plant.
+- - Each cell is represented by a 2 byte integer from 0000 to 10532, organized as follows - the thousands digit represents the cell's water level (0-10), the hundreds digit represents the cell's light level (0-5), the tens digit represents the index of the plant in the cell (0-3), and the ones digit represents the growth stage of the plant (0-2).  A 0 in the tens place is interpreted as the absence of a plant.
 
 - Infinite Undos and Redos  
 - - Undos and Redos are implemented as a pair of stacks.  Sowing and reaping plants and advancing time add a snapshot of the game state to the undo stack in the form of an ArrayBuffer as depicted above.  Pressing the undo button moves the top of the undo stack to the redo stack and loads the game state from the new top of the undo stack.  Pressing the redo button moves the top of the redo stack to the undo stack, then loads from the new top of the undo stack as before.  Adding a new snapshot to the undo stack by any means other than the redo button clears the redo stack.  
@@ -39,7 +39,7 @@ title Game State Buffer
 
 ## Reflection
 
-Add Info Here  
+There were no significant changes to our plans from last Devlog, save that our Tools Lead JC finally set up deno on the repository.  Hasn't exactly been a lot of time to end up changing plans otherwise - Typescript remains the most viable change option in terms of engines.
 
 
 # Devlog Entry F.0 - 12/3/2024
