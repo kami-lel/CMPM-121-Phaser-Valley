@@ -48,7 +48,9 @@ There were no significant changes to our plans from last Devlog, save that our T
 
 ### Controlled Character Moves Across a 2d Grid
 
-The player can traverse a 5x5 grid using the arrow keys.  
+In play scence(Play.js), use add rectangle to create a 5*5 2D Grid. And use an array to store all the value that is related to the cell
+For the player sprite, I load sprite sheet in Load.js and create idle animation for it. The Player sprite is define in Player.js that handles all logic for the player. positionX and positionY can record the player location on the 2D grid. updatePosition() is the function that change the position of the player. And in updatePlayer(), it track on the arrow key, if player press the arrow key, then call updatePosition() function to move the player on the 2D Grid
+
 
 ### Time Advances Manually
 
@@ -56,11 +58,11 @@ There is a button onscreen that advances time for all the cells, updating them b
 
 ### Proximity-Based Reaping and Sowing
 
-The player can only sow a new plant or reap a fully grown plant if they are in the same cell as it.  
+Player can select on the near by cell and sow a new plant or reap a fully grown plant. If no cell is select, it will sow a new plant or reap on the player cell. 
 
 ### Grid Cells Have Sun And Water Levels
 
-Each cell has both a sun level and a water level, displayed as an integer value.  Sun levels are randomized between 0 and 5 every turn.  Each cell gains anywhere between 0 and 3 water level per turn, and loses 2 water level if it has both at least 1 sun and a plant of growth stage 0 (just planted) or 1 (partially grown).  
+Each cell has both a sun level and a water level, displayed as an integer value.  When the "Next Day" got click, for every cell, the sun levels will randomized between 0 and 5 every turn.  And each cell gains anywhere between 0 and 3 water level per turn, and loses 2 water level if it has both at least 1 sun and a plant of growth stage 0 (just planted) or 1 (partially grown).  
 
 ### Each Plant Has Both a Type and a Growth Level
 
@@ -68,11 +70,11 @@ There are three kinds of plants - mushrooms, grass, and pumpkins.  Each plant ha
 
 ### Plant Growth is Governed by Simple Spatial Rules
 
-When a cell has a plant that is not fully grown, and the cell has at least 1 sun and 2 water, then the plant's growth stage increases by 1 and the water level of the cell decreases by 2.  
+When the player click "next day", if a cell has a plant that is not fully grown, and the cell has at least 1 sun and 2 water, then the plant's growth stage increases by 1 and the water level of the cell decreases by 2. And the growLevel of the plant will plus 1, the texture will also change.
 
 ### Scenario is Completed When Some Condition is Satisfied
 
-The scenario is completed once the player has obtained $100 by reaping fully grown plants.  This can be achieved in as little as two turns by planting two pumpkins and getting lucky with the sun levels.  
+The goadl for the game is earn money, player start from $10, player can sow different plant, wait for them grow, reap them for money. The winning conditions in the game is very simple now, when the money that the player have is $100 or more, the player will go the wining scene. And it will told the player is win the game in XX days. 
 
 ## Reflection
 
