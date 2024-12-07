@@ -35,7 +35,7 @@ title Game State Buffer
 - Infinite Undos and Redos  
 - - Undos and Redos are implemented as a pair of stacks.  Sowing and reaping plants and advancing time add a snapshot of the game state to the undo stack in the form of an ArrayBuffer as depicted above.  Pressing the undo button moves the top of the undo stack to the redo stack and loads the game state from the new top of the undo stack.  Pressing the redo button moves the top of the redo stack to the undo stack, then loads from the new top of the undo stack as before.  Adding a new snapshot to the undo stack by any means other than the redo button clears the redo stack.  
 - Multiple Save Files and Autosaving  
-- - The game maintains three save files and one autosave in local storage.  The save files are manually saved to using the save button, while the autosave updates whenever the time is advanced.
+- - The game maintains three save files and one autosave in local storage.  The save files are manually saved to using the save button, while the autosave updates upon starting the game and whenever the time is advanced.  Upon starting the game, the player is able to select a save file to start from - if the save file has data it will be loaded, otherwise the default start will be loaded.  The player may also manually load a save file at any point prior to finishing the game.
 
 ## Reflection
 
