@@ -347,15 +347,15 @@ class Play extends Phaser.Scene {
         for (let i = 0; i < len; i++) {
             binaryString += String.fromCharCode(bytes[i]);
         }
-        return window.btoa(binary);
+        return window.btoa(binaryString);
     }
 
     base64ToArrayBuffer(base64) {
-        let binary_string = window.atob(base64);
-        let len = binary_string.length;
+        let binaryString = window.atob(base64);
+        let len = binaryString.length;
         let bytes = new Uint8Array(len);
         for (let i = 0; i < len; i++) {
-          bytes[i] = binary_string.charCodeAt(i);
+          bytes[i] = binaryString.charCodeAt(i);
         }
         return bytes.buffer;
     }
@@ -413,22 +413,17 @@ class Play extends Phaser.Scene {
     stackToBase64(stack) {
         let base64 = "";
         for (const buffer of stack) {
-          base64 += this.arrayBufferToBase64(buffer);
+          base64 += this.arrayBufferToBase64(buffer) + "@";
         }
         return base64;
     }
 
     base64ToStack(base64) {
         let stack = [];
-        let buffer = new ArrayBuffer(0);
-        let index = 0;
-        for (let i = 0; i < base64.length; i++) {
-          buffer[index] = base64[i];
-          index++;
-          if (index === buffer.byteLength) {
-            stack.push(buffer);
-            buffer = new ArrayBuffer(0);
-            index = 0;
+        let bufferStrings = base64.split("@");
+        for (const bufferString of bufferStrings) {
+          if (bufferString) {
+            stack.push(this.base64ToArrayBuffer(bufferString));
           }
         }
         return stack;
@@ -449,5 +444,7 @@ class Play extends Phaser.Scene {
         const [undoString, redoString] = save.split("|");
         this.undoStack = this.base64ToStack(undoString);
         this.redoStack = this.base64ToStack(redoString);
+        const savedState = this.undoStack[this.undoStack.length - 1];
+        this.fromArrayBuffer(savedState);
     }
 }
