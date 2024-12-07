@@ -200,14 +200,22 @@ class Play extends Phaser.Scene {
         }
     }
 
+    checkCanGrow(cell){
+        if (!cell.hasPlant || cell.growthLevel >= 2){
+            return false
+        }
+        if (cell.sun >= 1 && cell.water >= 2){
+            return true
+        }
+        return false
+    }
+
     plantGrow(){
         this.grid.forEach((cell) => {
-            if (cell.hasPlant && cell.growthLevel <= 1){
-                if (cell.sun >= 1 && cell.water >= 2){
-                    cell.growthLevel++
-                    cell.water -= 2;
-                    cell.plantSprite.setFrame(cell.growthLevel)
-                }
+            if (this.checkCanGrow(cell)){
+                cell.growthLevel++
+                cell.water -= 2;
+                cell.plantSprite.setFrame(cell.growthLevel)
             }
         });
     }
