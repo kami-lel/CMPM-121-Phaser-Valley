@@ -48,9 +48,9 @@ There were no significant changes to our plans from last Devlog, save that our T
 
 ### Controlled Character Moves Across a 2d Grid
 
-In play scence(Play.js), use add rectangle to create a 5*5 2D Grid. And use an array to store all the value that is related to the cell
-For the player sprite, I load sprite sheet in Load.js and create idle animation for it. The Player sprite is define in Player.js that handles all logic for the player. positionX and positionY can record the player location on the 2D grid. updatePosition() is the function that change the position of the player. And in updatePlayer(), it track on the arrow key, if player press the arrow key, then call updatePosition() function to move the player on the 2D Grid
-
+The game occurs on a 5*5 2D Grid. Arrays are used to store all values related to a given cell.
+The player can move between cells using the arrow keys, which adjusts the character's coordinates by one in the relevant direction, 
+then moves the character sprite by the length of one cell.
 
 ### Time Advances Manually
 
