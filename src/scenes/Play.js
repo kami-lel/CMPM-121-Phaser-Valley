@@ -28,7 +28,8 @@ class Play extends Phaser.Scene {
                 type: plant.type,
                 cost: plant.cost,
                 price: plant.price,
-                growthConditions: {sun: plant.growthConditions.sun, water: plant.growthConditions.water}
+                sunNeed: plant.sunNeed, 
+                waterNeed: plant.waterNeed
             })
           });
 
@@ -163,7 +164,7 @@ class Play extends Phaser.Scene {
     
     update() {
         this.player.updatePlayer();
-        this.updatePlayerState(); // maybe move this to payer prefab
+        this.updatePlayerState(); 
         this.updateCellInfo();
         this.updateMoneyText(money);
         if (money >= this.winCondition){
@@ -198,7 +199,7 @@ class Play extends Phaser.Scene {
         if (this.selectCell){
             this.selectCell.border.setVisible(false);
         }
-        if (this.selectCell && this.checkIsNearPlayer(this.selectCell, this.foundCell(this.player.positionX, this.player.positionY))){
+        if (this.selectCell && this.checkIsNear(this.selectCell, this.foundCell(this.player.positionX, this.player.positionY))){
             this.selectCell.border.setVisible(true)
         }else{
             this.selectCell = null;
@@ -209,7 +210,8 @@ class Play extends Phaser.Scene {
         if (!cell.hasPlant || cell.growthLevel >= 2){
             return false
         }
-        if (cell.sun >= 1 && cell.water >= 2){
+        const plantIndex = this.plant.findIndex((plant) => plant.type === this.plant[cell.plantType].type);
+        if (cell.sun >= this.plant[plantIndex].sunNeed && cell.water >= this.plant[plantIndex].waterNeed){
             return true
         }
         return false
@@ -218,8 +220,9 @@ class Play extends Phaser.Scene {
     plantGrow(){
         this.grid.forEach((cell) => {
             if (this.checkCanGrow(cell)){
+                const plantIndex = this.plant.findIndex((plant) => plant.type === this.plant[cell.plantType].type);
                 cell.growthLevel++
-                cell.water -= 2;
+                cell.water -= this.plant[plantIndex].waterNeed;
                 cell.plantSprite.setFrame(cell.growthLevel)
             }
         });
@@ -267,8 +270,12 @@ class Play extends Phaser.Scene {
     }
 
     updateCellInfo(){
-        const playerCell = this.foundCell(this.player.positionX, this.player.positionY);
-        this.cellInfo.setText(`SunLevel: ${playerCell.sun}\nWaterLevel: ${playerCell.water}`);
+        if (this.selectCell){
+            this.cellInfo.setText(`SunLevel: ${this.selectCell.sun}\nWaterLevel: ${this.selectCell.water}`);
+        }else{
+            const playerCell = this.foundCell(this.player.positionX, this.player.positionY);
+            this.cellInfo.setText(`SunLevel: ${playerCell.sun}\nWaterLevel: ${playerCell.water}`);
+        }
     }
 
     createGrid() {
@@ -309,7 +316,7 @@ class Play extends Phaser.Scene {
                     this.selectCell.border.setVisible(false);
                 }
                 this.selectCell = this.foundCell(row, col);
-                if (this.checkIsNearPlayer(this.selectCell, this.foundCell(this.player.positionX, this.player.positionY))){
+                if (this.checkIsNear(this.selectCell, this.foundCell(this.player.positionX, this.player.positionY))){
                     this.selectCell.border.setVisible(true)
                 }else{
                     this.selectCell = null;
@@ -319,19 +326,19 @@ class Play extends Phaser.Scene {
         }
     }
 
-    // move to player prefab
-    checkIsNearPlayer(playerCell, selectCell){
-        if (playerCell.row === selectCell.row && playerCell.col === selectCell.col){
-            return true;
-        }else{
-            const differenceX = selectCell.row -playerCell.row;
-            const differenceY = selectCell.col -playerCell.col;
-            if (differenceX <= 1 && differenceX >= -1){
-                if (differenceY <= 1 && differenceY >= -1){
-                    return true
-                } 
+    // Check if two cell is near by
+   checkIsNear(cellA, CellB){
+    if (cellA.row === CellB.row && cellA.col === CellB.col){
+        return true;
+    }else{
+        const differenceX = CellB.row - cellA.row;
+        const differenceY = CellB.col - cellA.col;
+        if (differenceX <= 1 && differenceX >= -1){
+            if (differenceY <= 1 && differenceY >= -1){
+                return true
             }
-            return false;
+        }
+        return false;
         }
     }
 
