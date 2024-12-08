@@ -7,6 +7,11 @@ class Play extends Phaser.Scene {
     init(data) {
         // load from scenario
         const gameConfig = jsyaml.load(this.cache.text.get("gameConfig"));
+        this.textConfig = {
+            fill: "#ffffff",
+            fontSize: "32px",
+            backgroundColor: "#D1C6B4",
+        };
 
         // load External DSL for player position
         this.playerX = gameConfig.playerPosition.x
@@ -51,11 +56,7 @@ class Play extends Phaser.Scene {
         
         this.dayCountText = this.add.text(10, 5, "", { fontSize: 36 });
 
-        this.nextDayButton = this.add.text(width / 1.3, 10, "Next Day", {
-            fill: "#ffffff",
-            fontSize: "32px",
-            backgroundColor: "#D1C6B4",
-        })
+        this.nextDayButton = this.add.text(width / 1.3, 10, "Next Day", this.textConfig)
         .setInteractive()
         .on("pointerdown", () => {  
             this.updateDayCountText(++days),
@@ -67,11 +68,7 @@ class Play extends Phaser.Scene {
             this.saveToLocalStorage("autosave");
         });
 
-        this.undoButton = this.add.text(width * 0.075, height - 40, "Undo", {
-            fill: "#ffffff",
-            fontSize: "32px",
-            backgroundColor: "#D1C6B4",
-        })
+        this.undoButton = this.add.text(width * 0.075, height - 40, "Undo", this.textConfig)
         .setInteractive()
         .on("pointerdown", () => {  
             if (this.undoStack.length > 1) {
@@ -80,11 +77,7 @@ class Play extends Phaser.Scene {
             }
         });
 
-        this.redoButton = this.add.text(width * 0.625, height - 40, "Redo", {
-            fill: "#ffffff",
-            fontSize: "32px",
-            backgroundColor: "#D1C6B4",
-        })
+        this.redoButton = this.add.text(width * 0.625, height - 40, "Redo", this.textConfig)
         .setInteractive()
         .on("pointerdown", () => {  
             if (this.redoStack.length > 0) {
@@ -93,11 +86,7 @@ class Play extends Phaser.Scene {
             }
         });
 
-        this.saveButton = this.add.text(width * 0.6, 20, "Save", {
-            fill: "#ffffff",
-            fontSize: "32px",
-            backgroundColor: "#D1C6B4",
-        })
+        this.saveButton = this.add.text(width * 0.6, 15, "Save", this.textConfig)
         .setInteractive()
         .on("pointerdown", () => {
             this.scene.bringToTop("saveMenuScene");
@@ -105,11 +94,7 @@ class Play extends Phaser.Scene {
             this.scene.launch("saveMenuScene");
         });
 
-        this.loadButton = this.add.text(width * 0.45, 20, "Load", {
-            fill: "#ffffff",
-            fontSize: "32px",
-            backgroundColor: "#D1C6B4",
-        })
+        this.loadButton = this.add.text(width * 0.45, 15, "Load", this.textConfig)
         .setInteractive()
         .on("pointerdown", () => {
             this.scene.bringToTop("loadMenuScene");
@@ -194,7 +179,6 @@ class Play extends Phaser.Scene {
 
     }
 
-    // if player away from select cell, make select cell null
     setBorderVisble(){
         if (this.selectCell){
             this.selectCell.border.setVisible(false);
@@ -249,7 +233,7 @@ class Play extends Phaser.Scene {
             this.undoStack.push(sowBuffer);
             this.redoStack = [];
         }else if (playerCell.hasPlant){
-            console.log("This cell already have a plant")
+            console.log("This cell already has a plant")
         }
     }
 
