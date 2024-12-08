@@ -34,7 +34,8 @@ class Play extends Phaser.Scene {
                 cost: plant.cost,
                 price: plant.price,
                 sunNeed: plant.sunNeed, 
-                waterNeed: plant.waterNeed
+                waterNeed: plant.waterNeed,
+                maxGrowth: plant.maxGrowth
             })
           });
 
@@ -164,7 +165,7 @@ class Play extends Phaser.Scene {
         }else{
             plantCell = this.foundCell(this.player.positionX, this.player.positionY);
         }
-        if (plantCell && plantCell.growthLevel >= 2){
+        if (plantCell && plantCell.growthLevel >= this.plant[plantCell.plantType].maxGrowth){
             money += this.plant[plantCell.plantType].price;
             plantCell.hasPlant = false; 
             plantCell.plantType = 0; 
@@ -176,7 +177,6 @@ class Play extends Phaser.Scene {
             this.undoStack.push(reapBuffer);
             this.redoStack = [];
         }
-
     }
 
     setBorderVisble(){

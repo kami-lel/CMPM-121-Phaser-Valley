@@ -11,21 +11,25 @@ plant:
       price: 0
       sunNeed: 0
       waterNeed: 0
+      maxGrowth: 0
     - type: mushroom
       cost: 1
       price: 5
       sunNeed: 1
       waterNeed: 2
+      maxGrowth: 2
     - type: grass
       cost: 5
       price: 12
       sunNeed: 1
       waterNeed: 1
+      maxGrowth: 2
     - type: pumpkin
       cost: 20
       price: 45
       sunNeed: 5
       waterNeed: 8
+      maxGrowth: 2
 
 playerPosition:
     x: 0
