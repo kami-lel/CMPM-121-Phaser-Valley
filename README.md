@@ -63,11 +63,11 @@ There is a button onscreen that advances time for all the cells, updating them b
 
 - Proximity-Based Reaping and Sowing
 
-Player can select on the near by cell and sow a new plant or reap a fully grown plant. If no cell is select, it will sow a new plant or reap on the player cell. 
+Player can select on the nearby cell and sow a new plant or reap a fully grown plant. If no cell is selected, it will sow a new plant or reap on the player cell. 
 
 - Grid Cells Have Sun And Water Levels
 
-Each cell has both a sun level and a water level, displayed as an integer value.  When the "Next Day" got click, for every cell, the sun levels will randomized between 0 and 5 every turn.  And each cell gains anywhere between 0 and 3 water level per turn, and loses 2 water level if it has both at least 1 sun and a plant of growth stage 0 (just planted) or 1 (partially grown).  
+Each cell has both a sun level and a water level, displayed as an integer value.  When the "Next Day" button is clicked, the sun levels of each cell is randomized between 0 and 5.  Additionally, each cell gains between 0 and 3 water level per turn, and loses 2 water level if it has both at least 1 sun and a plant of growth stage 0 (just planted) or 1 (partially grown).  
 
 - Each Plant Has Both a Type and a Growth Level
 
@@ -75,11 +75,11 @@ There are three kinds of plants - mushrooms, grass, and pumpkins.  Each plant ha
 
 - Plant Growth is Governed by Simple Spatial Rules
 
-When the player click "next day", if a cell has a plant that is not fully grown, and the cell has at least 1 sun and 2 water, then the plant's growth stage increases by 1 and the water level of the cell decreases by 2. And the growLevel of the plant will plus 1, the texture will also change.
+When the player clicks the "next day" button, if a cell has a plant that is not fully grown, and the cell has at least 1 sun and 2 water, then the plant's growth stage increases by 1 (changing the plant's sprite) and the water level of the cell decreases by 2.
 
 - Scenario is Completed When Some Condition is Satisfied
 
-The goadl for the game is earn money, player start from $10, player can sow different plant, wait for them grow, reap them for money. The winning conditions in the game is very simple now, when the money that the player have is $100 or more, the player will go the wining scene. And it will told the player is win the game in XX days. 
+The objective of the game is earn money.  The player starts with $10, and must sow different plants, wait for them to grow, and harvest them for money. Upon reaching $100, the player has completed the scenario. 
 
 ### Reflection
 
