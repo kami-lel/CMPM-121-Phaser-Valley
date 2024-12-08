@@ -5,42 +5,47 @@ class Play extends Phaser.Scene {
     }
 
     init(data) {
-        this.landColor = 0x926829;
-        this.gridConfig = { width: 5, height: 5, size: 100 };
+        // load from scenario
+        const gameConfig = jsyaml.load(this.cache.text.get("gameConfig"));
+
+        // load External DSL for player position
+        this.playerX = gameConfig.playerPosition.x
+        this.playerY = gameConfig.playerPosition.y;
+
+        this.landColor = gameConfig.landColor;
+
+        // load External DSL for grid size
+        this.gridConfig = { 
+            width: gameConfig.GridConfig.Width, 
+            height: gameConfig.GridConfig.Height, 
+            size: gameConfig.GridConfig.Size };
         this.grid = [];
-        this.plant = [
-            {
-                type: "none",   
-                cost: 0,
-                price: 0 ,
-            },
-            {
-                type: "mushroom",
-                cost: 1,
-                price: 10,
-            },
-            {
-                type: "grass",
-                cost: 3,
-                price: 25,
-            },
-            {
-                type: "pumpkin",
-                cost: 5,
-                price: 50,
-            }
-        ]
+
+        // load External DSL for plant
+        this.plant = []
+        gameConfig.plant.forEach(plant => {
+            this.plant.push({
+                type: plant.type,
+                cost: plant.cost,
+                price: plant.price,
+                growthConditions: {sun: plant.growthConditions.sun, water: plant.growthConditions.water}
+            })
+          });
+
+        this.winCondition = gameConfig.winCondition;
+        
         this.selectCell = null;
 
         this.saveSlot = data.saveSlot;
 
         this.undoStack = [];
         this.redoStack = [];
+        
     }
 
     create() {
         this.createGrid();
-        this.player = new Player(this, 0, 0, "player").setDepth(3);
+        this.player = new Player(this, this.playerX, this.playerY, "player").setDepth(3);
         this.keys = this.input.keyboard.createCursorKeys()
         
         this.dayCountText = this.add.text(10, 5, "", { fontSize: 36 });
@@ -112,7 +117,7 @@ class Play extends Phaser.Scene {
         });
 
         // show the win conditions
-        this.add.text(width * 0.2, height - 40, "Goal: Earn $100", { fontSize: 36 });
+        this.add.text(width * 0.2, height - 40, `Goal: Earn $${this.winCondition}`, { fontSize: 36 });
         
         this.playerMoney = this.add.text(width / 1.45, 50, `Money: $${money}`, { fontSize: 24 });
         this.displayPosition = this.add.text(width / 1.45, 80, "", { fontSize: 24 });
@@ -161,7 +166,7 @@ class Play extends Phaser.Scene {
         this.updatePlayerState(); // maybe move this to payer prefab
         this.updateCellInfo();
         this.updateMoneyText(money);
-        if (money >= 100){
+        if (money >= this.winCondition){
             this.scene.start("winScene");
         }
     }
