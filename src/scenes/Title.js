@@ -4,12 +4,13 @@ class Title extends Phaser.Scene {
     }
 
     create (){
+        let translations = getTranslations();
         // Title Background
         const backGround = this.add.image(400, 300, "titlePage");
         this.buttonPressed = false;
 
         // Title
-        this.titleText = this.add.text(325, 200, "Phaser Valley", {
+        this.titleText = this.add.text(325, 200, translations.Title, {
             fontFamily: 'Arial', 
             fontSize: '24px', 
         });
@@ -21,8 +22,42 @@ class Title extends Phaser.Scene {
         this.buttonCredits.setInteractive();
 
         // Button Text
-        this.playText = this.add.text(180, 500, "Play");
-        this.creditsText = this.add.text(570, 500, "Credits");
+        this.playText = this.add.text(180, 500, translations.Play);
+        this.creditsText = this.add.text(570, 500, translations.Credit);
+
+        // Language Change buttons
+        this.englishButton = this.add.sprite(550, 30, "buttonGraphic").setScale(1.75, 1)
+        .setInteractive()
+        .on("pointerdown", () => {  
+            switchLanguage('en')
+            translations = getTranslations();
+            this.playText.setText(translations.Play)
+            this.creditsText.setText(translations.Credit)
+            this.titleText.setText(translations.Title)
+        });
+        this.chineseButton = this.add.sprite(650, 30, "buttonGraphic").setScale(1.75, 1)
+        .setInteractive()
+        .on("pointerdown", () => {  
+            switchLanguage('ch')
+            translations = getTranslations();
+            this.playText.setText(translations.Play)
+            this.creditsText.setText(translations.Credit)
+            this.titleText.setText(translations.Title)
+        });
+        this.arabicButton = this.add.sprite(750, 30, "buttonGraphic").setScale(1.75, 1)
+        .setInteractive()
+        .on("pointerdown", () => {  
+            switchLanguage('ar')
+            translations = getTranslations();
+            this.playText.setText(translations.Play)
+            this.creditsText.setText(translations.Credit)
+            this.titleText.setText(translations.Title)
+        });
+
+        // Add Language Change text
+        this.englishText = this.add.text(520, 20, translations.en);
+        this.chineseText = this.add.text(620, 20, translations.ch);
+        this.arabicText = this.add.text(720, 20, translations.ar);
     }
     update (){
         // Button Handlers
@@ -45,7 +80,8 @@ class ContinueMenu extends Phaser.Scene {
     }
 
     create(){
-        this.saveText = this.add.text(360, 75, "Load Save", {
+        const translations = getTranslations();
+        this.saveText = this.add.text(360, 75, translations.LoadSave, {
             fontFamily: 'Arial', 
             fontSize: '24px', 
         });
@@ -58,10 +94,10 @@ class ContinueMenu extends Phaser.Scene {
         this.buttonSave1.setInteractive();
         this.buttonSave2.setInteractive();
         this.buttonSave3.setInteractive();
-        this.autosaveText = this.add.text(370, 190, "Autosave");
-        this.save1Text = this.add.text(370, 265, "Save 1");
-        this.save2Text = this.add.text(370, 340, "Save 2");
-        this.save3Text = this.add.text(370, 415, "Save 3");
+        this.autosaveText = this.add.text(370, 190, translations.Autosave);
+        this.save1Text = this.add.text(370, 265, translations.Save1);
+        this.save2Text = this.add.text(370, 340, translations.Save2);
+        this.save3Text = this.add.text(370, 415, translations.Save3);
     }
 
     update(){
@@ -95,7 +131,8 @@ class SaveMenu extends Phaser.Scene {
     }
 
     create(){
-        this.saveText = this.add.text(360, 75, "Save Game", {
+        const translations = getTranslations();
+        this.saveText = this.add.text(360, 75, translations.SaveGame, {
             fontFamily: 'Arial', 
             fontSize: '24px', 
         });
@@ -108,10 +145,10 @@ class SaveMenu extends Phaser.Scene {
         this.buttonSave2.setInteractive();
         this.buttonSave3.setInteractive();
         this.buttonBack.setInteractive();
-        this.save1Text = this.add.text(370, 190, "Save 1");
-        this.save2Text = this.add.text(370, 265, "Save 2");
-        this.save3Text = this.add.text(370, 340, "Save 3");
-        this.backText = this.add.text(370, 415, "Go Back");
+        this.save1Text = this.add.text(370, 190, translations.Save1);
+        this.save2Text = this.add.text(370, 265, translations.Save2);
+        this.save3Text = this.add.text(370, 340, translations.Save3);
+        this.backText = this.add.text(370, 415, translations.GoBack);
     }
 
     update(){
@@ -152,7 +189,8 @@ class LoadMenu extends Phaser.Scene {
     }
 
     create(){
-        this.saveText = this.add.text(360, 75, "Load Save", {
+        const translations = getTranslations();
+        this.saveText = this.add.text(360, 75, translations.LoadSave, {
             fontFamily: 'Arial', 
             fontSize: '24px', 
         });
@@ -167,11 +205,11 @@ class LoadMenu extends Phaser.Scene {
         this.buttonSave2.setInteractive();
         this.buttonSave3.setInteractive();
         this.buttonBack.setInteractive();
-        this.autosaveText = this.add.text(370, 190, "Autosave");
-        this.save1Text = this.add.text(370, 265, "Save 1");
-        this.save2Text = this.add.text(370, 340, "Save 2");
-        this.save3Text = this.add.text(370, 415, "Save 3");
-        this.backText = this.add.text(370, 490, "Go Back");
+        this.autosaveText = this.add.text(370, 190, translations.Autosave);
+        this.save1Text = this.add.text(370, 265, translations.Save1);
+        this.save2Text = this.add.text(370, 340, translations.Save2);
+        this.save3Text = this.add.text(370, 415, translations.Save3);
+        this.backText = this.add.text(370, 490, translations.GoBack);
     }
 
     update(){
@@ -227,22 +265,23 @@ class Credits extends Phaser.Scene {
     }
 
     create () {
-        this.creditsTitle = this.add.text(360, 100, "Credits", {
+        const translations = getTranslations();
+        this.creditsTitle = this.add.text(360, 100, translations.Credit, {
             fontFamily: 'Arial', 
             fontSize: '24px', 
             align: 'center',
         });
         // Credits Text
-        this.programCredits = this.add.text(50, 200, "Core Programming by Haorong Rong", this.config);
-        this.saveCredits = this.add.text(50, 250, "Save System by Ian Wallace", this.config);
-        this.titleCredits = this.add.text(50, 300, "Title graphic made with assets from Kenney Assets", this.config);
-        this.terrainCredits = this.add.text(50, 350, "Terrain and Character sprites from Mystic Woods pack by Game Endeavor:\n https://game-endeavor.itch.io/mystic-woods", this.config);
-        this.plantCredits = this.add.text(50, 400, "Plant Sprites from Tiny Swords pack by Pixel Frog:\n https://pixelfrog-assets.itch.io/tiny-swords", this.config);
+        this.programCredits = this.add.text(50, 200, translations.programCredits, this.config);
+        this.saveCredits = this.add.text(50, 250, translations.saveCredits, this.config);
+        this.titleCredits = this.add.text(50, 300, translations.titleCredits, this.config);
+        this.terrainCredits = this.add.text(50, 350, translations.terrainCredits, this.config);
+        this.plantCredits = this.add.text(50, 400, translations.plantCredits, this.config);
 
         this.buttonReturn = this.add.sprite(380, 560, "buttonGraphic").setScale(1.75, 1);
         this.buttonReturn.setInteractive();
 
-        this.returnText = this.add.text(355, 550, "Return", this.config);
+        this.returnText = this.add.text(355, 550, translations.Return, this.config);
     }
     update (){
         this.buttonReturn.on('pointerdown', () => {

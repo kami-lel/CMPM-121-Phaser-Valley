@@ -51,13 +51,15 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        // load translation 
+        this.translations = getTranslations();
         this.createGrid();
         this.player = new Player(this, this.playerX, this.playerY, "player").setDepth(3);
         this.keys = this.input.keyboard.createCursorKeys()
         
         this.dayCountText = this.add.text(10, 5, "", { fontSize: 36 });
 
-        this.nextDayButton = this.add.text(width / 1.3, 10, "Next Day", this.textConfig)
+        this.nextDayButton = this.add.text(width / 1.3, 10, this.translations.NextDay, this.textConfig)
         .setInteractive()
         .on("pointerdown", () => {  
             this.updateDayCountText(++days),
@@ -69,7 +71,7 @@ class Play extends Phaser.Scene {
             this.saveToLocalStorage("autosave");
         });
 
-        this.undoButton = this.add.text(width * 0.075, height - 40, "Undo", this.textConfig)
+        this.undoButton = this.add.text(width * 0.03, height - 40, this.translations.Undo, this.textConfig)
         .setInteractive()
         .on("pointerdown", () => {  
             if (this.undoStack.length > 1) {
@@ -78,7 +80,7 @@ class Play extends Phaser.Scene {
             }
         });
 
-        this.redoButton = this.add.text(width * 0.625, height - 40, "Redo", this.textConfig)
+        this.redoButton = this.add.text(width * 0.725, height - 40, this.translations.Redo, this.textConfig)
         .setInteractive()
         .on("pointerdown", () => {  
             if (this.redoStack.length > 0) {
@@ -87,7 +89,7 @@ class Play extends Phaser.Scene {
             }
         });
 
-        this.saveButton = this.add.text(width * 0.6, 15, "Save", this.textConfig)
+        this.saveButton = this.add.text(width * 0.6, 15, this.translations.Save, this.textConfig)
         .setInteractive()
         .on("pointerdown", () => {
             this.scene.bringToTop("saveMenuScene");
@@ -95,7 +97,7 @@ class Play extends Phaser.Scene {
             this.scene.launch("saveMenuScene");
         });
 
-        this.loadButton = this.add.text(width * 0.45, 15, "Load", this.textConfig)
+        this.loadButton = this.add.text(width * 0.35, 15, this.translations.Load, this.textConfig)
         .setInteractive()
         .on("pointerdown", () => {
             this.scene.bringToTop("loadMenuScene");
@@ -104,15 +106,15 @@ class Play extends Phaser.Scene {
         });
 
         // show the win conditions
-        this.add.text(width * 0.2, height - 40, `Goal: Earn $${this.winCondition}`, { fontSize: 36 });
+        this.add.text(width * 0.2, height - 40, this.translations.Goal + `${this.winCondition}`, { fontSize: 36 });
         
-        this.playerMoney = this.add.text(width / 1.45, 50, `Money: $${money}`, { fontSize: 24 });
+        this.playerMoney = this.add.text(width / 1.45, 50, this.translations.Money +`${money}`, { fontSize: 24 });
         this.displayPosition = this.add.text(width / 1.45, 80, "", { fontSize: 24 });
         this.cellInfo = this.add.text(width / 1.45, 130, "", { fontSize: 24 });
-
+        
         // sow plant board
         for (let x = 1; x < this.plant.length; x++){
-            this.add.text(width / 1.45, 180 + (x-1) * 100, `sow ${this.plant[x].type} $${this.plant[x].cost}`, {
+            this.add.text(width / 1.45, 180 + (x-1) * 100, this.translations.Sow + this.translations.plant[x - 1] + ` $${this.plant[x].cost}`, {
                 fill: "#ffffff",
                 fontSize: "24px",
                 backgroundColor: "#D1C6B4",
@@ -124,7 +126,7 @@ class Play extends Phaser.Scene {
             this.add.sprite(width / 1.35, 240 + (x-1) * 100, this.plant[x].type).setScale(1.3).setFrame(2)
         }
 
-        this.add.text(width / 1.35, 530, "Reap", {
+        this.add.text(width / 1.35, 480, this.translations.Reap, {
             fill: "#ffffff",
             fontSize: "48px",
             backgroundColor: "#D1C6B4",
@@ -238,27 +240,27 @@ class Play extends Phaser.Scene {
     }
 
     updateDayCountText(days) {
-        this.dayCountText.setText(`Day: ${days}`);
+        this.dayCountText.setText(this.translations.Day +`: ${days}`);
       }
 
     updateMoneyText(money) {
-        this.playerMoney.setText(`Money: $${money}`);
+        this.playerMoney.setText(this.translations.Money + `${money}`);
     }
 
     updatePlayerState(){
         if (this.selectCell){
-            this.displayPosition.setText(`Select Position: \n (${this.selectCell.row}, ${this.selectCell.col})`);
+            this.displayPosition.setText(this.translations.SelectPosition + `: \n (${this.selectCell.row}, ${this.selectCell.col})`);
         }else{
-            this.displayPosition.setText(`Select Position: \n (${this.player.positionX}, ${this.player.positionY})`);
+            this.displayPosition.setText(this.translations.SelectPosition + `: \n (${this.player.positionX}, ${this.player.positionY})`);
         }
     }
 
     updateCellInfo(){
         if (this.selectCell){
-            this.cellInfo.setText(`SunLevel: ${this.selectCell.sun}\nWaterLevel: ${this.selectCell.water}`);
+            this.cellInfo.setText(this.translations.SunLevel + `: ${this.selectCell.sun}\n` + this.translations.WaterLevel +`: ${this.selectCell.water}`);
         }else{
             const playerCell = this.foundCell(this.player.positionX, this.player.positionY);
-            this.cellInfo.setText(`SunLevel: ${playerCell.sun}\nWaterLevel: ${playerCell.water}`);
+            this.cellInfo.setText(this.translations.SunLevel + `: ${playerCell.sun}\n` + this.translations.WaterLevel +`: ${playerCell.water}`);
         }
     }
 

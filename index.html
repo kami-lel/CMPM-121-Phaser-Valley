@@ -4,15 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Phaser Valley</title>
-    <script src="//cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
-    <script src="//cdn.fbrq.io/phaser-i18next/v0.0.1/phaser-i18next.min.js"></script>
+    <!-- Include Phaser -->
     <script src="lib/phaser.js"></script>
+    <!-- Include js-yaml -->
+    <script src="//cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
+    <!-- Include translation files-->
+    <script src="/locales/en/translations.js"></script>
+    <script src="/locales/ch/translations.js"></script>
+    <script src="/locales/ar/translation.js"></script> 
+    <!-- Include the game script -->
+    <script src="src/prefabs/languageManager.js"></script>
     <script src="src/scenes/Load.js"></script>
     <script src="src/scenes/Title.js"></script>
     <script src="src/prefabs/Player.js"></script>
     <script src="src/scenes/Play.js"></script>
     <script src="src/scenes/Win.js"></script>
     <script src="src/main.js"></script>
+    
 
   </head>
   <body>
