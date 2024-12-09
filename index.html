@@ -4,6 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Phaser Valley</title>
+    <!-- register service worker for PWA -->
+    <script>
+      if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+              navigator.serviceWorker.register('/sw.js', {scope: '/'}).then(function(registration) {
+                  console.log('sw.js registration successful, scope=', registration.scope);
+              }, function(err) {
+                  console.log('Error: sw.js fail to register: ', err);
+              });
+          });
+      }
+    </script>
+
     <!-- Include Phaser -->
     <script src="lib/phaser.js"></script>
     <!-- Include js-yaml -->
@@ -20,8 +33,8 @@
     <script src="src/scenes/Play.js"></script>
     <script src="src/scenes/Win.js"></script>
     <script src="src/main.js"></script>
-    
 
+    <link rel="manifest" href="manifest.json"/>
   </head>
   <body>
     <div id="phaser-game"></div>
