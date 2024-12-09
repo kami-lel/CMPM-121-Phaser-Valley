@@ -22,13 +22,13 @@
 - Localized And Support Three Different Written Languages
     - Our game supports three languages: English, Arabic, and Chinese. English is the primary language of the development team. For Arabic, which is the right-to-left script, we use Deepl to assist with translations. For Chinese, a logographic script, this is my native language, so I translated it by myself. To change the language in the game, players can do that by selecting the language buttons that are available on the main menu. These buttons are labeled with the respective language names. 
 - Installable on a Smartphone-class Mobile Device
-    - Work In Progress
+    - Our game is installable on iOS and mobile, thanks to the PWA tutorials posted in the class Discord.
 - The game launches and runs even when the device is not connected to the internet
-    - Work In Progress
+    - Our game is playable offline.
 
 ### Reflection
 
-Now our game supports three different written languages. Players can switch the language setting on the start screen. For making the game work on mobile, we don't have much idea about that, and I don't think we still have enough time to get it done.
+Well, we managed to get F.3 finished.  We didn't manage to complete the conversion from Javascript to Typescript, but pretty much everythign else is functional.  In regards to our roles, we mostly kept to them - our tools lead did eventually set up Deno for the repository, our Design Lead made and translated the game, our other Design Lead handled mobile and offline development... and our Engine Lead failed at one of his two jobs.  The design didn't change much, but that's because it started as minimal as possible, and we were still behind every step of the way.  If everyone was working from the start, maybe we'd have had room to innovate, but as it stands there just wasn't any time.
 
 ## Devlog Entry F.2 - 12/8/2024
 
@@ -101,9 +101,9 @@ playerPosition:
 landColor: 0x926829
 ```
 - Internal DSL for plant types and growth conditions
-    - Work In Progress
+    - Not implemented.
 - Switch to an alternate platform
-    - Work In Progress
+    - We did not manage to successfully switch platforms.  That being said, the work put in to attempt to switch is available in branch 'convertToTS' - much of the code would have been able to be carried over with minor tweaking, and we attempted to move the saving and loading functions and scenes into their own file.  This would have required some adjustments - arranging to have the save/load screens pass a SaveData object (consisting of the current game state, the undo and redo stacks, and a grid size) to the Play scene instead of telling the Play scene to relevant actions, as it does now.  The main issue was the additional limitations on using code from one script file in another script - even if I had both the Play and Save scenes have copies of the saving functions (Play needs it for autosaves), we're using js-yaml for the external DSL.  Importing it causes errors at runtime, not importing it causes errors in the IDE. 
 
 ### Reflection
 
