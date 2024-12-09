@@ -11,7 +11,7 @@
       if ('serviceWorker' in navigator) {
           window.addEventListener('load', function() {
               navigator.serviceWorker.register('/sw.js', {scope: '/'}).then(function(registration) {
-                  console.log('sw.js registration successful, scope=', registration.scope);
+                  console.log('sw.js registration successful, scope=', registration.scope);  // HACK
               }, function(err) {
                   console.log('Error: sw.js fail to register: ', err);
               });

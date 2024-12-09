@@ -1,1 +1,0 @@
-This asset is from https://pixelfrog-assets.itch.io/tiny-swords
