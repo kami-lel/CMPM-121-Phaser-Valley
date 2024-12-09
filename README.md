@@ -10,14 +10,21 @@
 ## Devlog Entry F.3 - 12/8/2024
 
 ### Requirements
+
+- [F0.a - F0.g]
+    - Same as last entry
+- [F1.a - F1.d]
+    - Same as last entry
+- [F2.a - F2.c]
+    - Same as last entry
 - Game Internationalized
     - 
 - Localized And Support Three Different Written Languages
     - 
 - Installable on a Smartphone-class Mobile Device
-    - 
+    - Work In Progress
 - The game launches and runs even when the device is not connected to the internet
-    - 
+    - Work In Progress
 
 ### Reflection
 
