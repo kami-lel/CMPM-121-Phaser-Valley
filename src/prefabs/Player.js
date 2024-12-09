@@ -30,12 +30,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   updatePlayer(){
     // make a local copy of the keyboard object
     const { left, right, up, down} = this.scene.keys
+
+    const cursorKeys = this.scene.cursorKeys;
+
+        for (var name in cursorKeys) {
+            if (cursorKeys[name].isDown) {
+                console.log(cursorKeys)
+            }
+        }
+
     if (!this.active)
 	  {
 		  return
 	  }
     // move left
-    if(Phaser.Input.Keyboard.JustDown(left) && this.positionX != 0) {
+    if((Phaser.Input.Keyboard.JustDown(left)) && this.positionX != 0) {
       this.updatePosition(this.positionX - 1, this.positionY)
       this.scene.setBorderVisble();
     }
@@ -54,6 +63,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.updatePosition(this.positionX, this.positionY + 1)
       this.scene.setBorderVisble();
     }
+
+    if (this.scene.ccc != "") {this.scene.ccc = "";}
+    console.log(this.scene.ccc);
   }
 }
 

@@ -4,6 +4,13 @@ class Play extends Phaser.Scene {
       super("playScene");
     }
 
+    preload() {
+        var url;
+  
+        url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js';
+        this.load.plugin('rexvirtualjoystickplugin', url, true);
+    }
+
     init(data) {
         // load from scenario
         const gameConfig = jsyaml.load(this.cache.text.get("gameConfig"));
@@ -51,12 +58,15 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.ccc = "";
+
+        
         // load translation 
         this.translations = getTranslations();
         this.createGrid();
         this.player = new Player(this, this.playerX, this.playerY, "player").setDepth(3);
-        this.keys = this.input.keyboard.createCursorKeys()
-        
+        this.keys = this.input.keyboard.createCursorKeys();
+
         this.dayCountText = this.add.text(10, 5, "", { fontSize: 36 });
 
         this.nextDayButton = this.add.text(width / 1.3, 10, this.translations.NextDay, this.textConfig)
@@ -147,6 +157,21 @@ class Play extends Phaser.Scene {
         this.undoStack.push(firstBuffer);
 
         this.saveToLocalStorage("autosave");
+
+        this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
+                x: 400,
+                y: 300,
+                radius: 100,
+                base: this.add.circle(0, 0, 100, 0x888888).setAlpha(0.5),
+                thumb: this.add.circle(0, 0, 50, 0xcccccc).setAlpha(0.5),
+                // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
+                // forceMin: 16,
+                // enable: true
+            })
+            .on('update', this.dumpJoyStickState, this);
+
+        this.text = this.add.text(0, 0);
+        this.dumpJoyStickState();
     }
     
     
@@ -452,5 +477,27 @@ class Play extends Phaser.Scene {
         this.redoStack = this.base64ToStack(redoString);
         const savedState = this.undoStack[this.undoStack.length - 1];
         this.fromArrayBuffer(savedState);
+    }
+
+    dumpJoyStickState() {
+        var cursorKeys = this.joyStick.createCursorKeys();
+        var s = 'Key down: ';
+        for (var name in cursorKeys) {
+            if (cursorKeys[name].isDown) {
+                s += name;
+            }
+        }
+
+        s += `
+Force: ${Math.floor(this.joyStick.force * 100) / 100}
+Angle: ${Math.floor(this.joyStick.angle * 100) / 100}
+`;
+
+        s += '\nTimestamp:\n';
+        for (var name in cursorKeys) {
+            var key = cursorKeys[name];
+            s += `${name}: duration=${key.duration / 1000}\n`;
+        }
+        // TODO this.text.setText(s);
     }
 }
