@@ -2,8 +2,8 @@
 
 ## Table of Contents
 - [Devlog F.2](#Devlog-Entry-F.2---12/8/2024)
-- [Devlog F.1](#Devlog-Entry F.1---12/6/2024)
-- [Devlog F.0](#Devlog-Entry F.0---12/3/2024)
+- [Devlog F.1](#Devlog-Entry-F.1---12/6/2024)
+- [Devlog F.0](#Devlog-Entry-F.0---12/3/2024)
 - [Devlog Team](#Devlog-Entry---11/13/2024)
 
 ## Devlog Entry F.2 - 12/8/2024
@@ -32,9 +32,17 @@
     -  Same as last entry
 - Infinite Undos and Redos  
     - Same as last entry
-- External DSL for scenario designs
-    - The design of external DSL for scenario design utilizes YAML. 
+- External DSL for scenario designs(YAML)
+    - The external DSL defines key components like the grid config, win conditions, plant info, player position, and land color. The grid config defines how many rows and columns the grid will have, as well as the size of each cell. The win conditions specify how many money the player need to earn. Plant include information on plant type, sowing price, selling price, growing conditions, and maximum number of growth times. Player positions determines the starting position of the player at the beginning of the game. Lastly, landColor, the color of the cell
+    **Scenario File**
 ```
+GridConfig:
+    Width: 5
+    Height: 5
+    Size: 100
+
+winCondition: 100
+
 plant:
     - type: none
       cost: 0
@@ -42,6 +50,30 @@ plant:
       sunNeed: 0
       waterNeed: 0
       maxGrowth: 0
+    - type: mushroom
+      cost: 1
+      price: 5
+      sunNeed: 1
+      waterNeed: 2
+      maxGrowth: 2
+    - type: grass
+      cost: 5
+      price: 12
+      sunNeed: 1
+      waterNeed: 1
+      maxGrowth: 2
+    - type: pumpkin
+      cost: 20
+      price: 45
+      sunNeed: 5
+      waterNeed: 8
+      maxGrowth: 2
+
+playerPosition:
+    x: 0
+    y: 0
+
+landColor: 0x926829
 ```
 - Internal DSL for plant types and growth conditions
     - Work In Progress
@@ -53,21 +85,21 @@ plant:
 ### Requirements
 
 - Character Moves on 2d Grid  
-- - Same as last week  
+    - Same as last week  
 - Time Advances Manually  
-- - Same as last week  
+    - Same as last week  
 - Proximity-Based Reaping and Sowing  
-- - Same as last week  
+    - Same as last week  
 - Grid Cells Have Sun And Water Levels  
-- - Same as last week  
+    - Same as last week  
 - Each Plant Has Both a Type and a Growth Level  
-- - Same as last week  
+    - Same as last week  
 - Plant Growth is Governed by Simple Spatial Rules  
-- - Same as last week  
+    - Same as last week  
 - Scenario is Completed When Some Condition is Satisfied  
-- - Same as last week  
+    - Same as last week  
 - Cell Information is Stored as an Array of Structs or a Struct of Arrays  
-- -  Our grid cell information is stored as an array of structs using ArrayBuffers, following the format depicted below.  
+    -  Our grid cell information is stored as an array of structs using ArrayBuffers, following the format depicted below.  
 
 ```mermaid
 packet-beta
@@ -80,11 +112,11 @@ title Game State Buffer
 
 - - Each cell is represented by a 2 byte integer from 0000 to 10532, organized as follows - the thousands digit represents the cell's water level (0-10), the hundreds digit represents the cell's light level (0-5), the tens digit represents the index of the plant in the cell (0-3), and the ones digit represents the growth stage of the plant (0-2).  A 0 in the tens place is interpreted as the absence of a plant.
 - Multiple Save Files and Autosaving  
-- - The game maintains three save files and one autosave in local storage.  The save files are manually saved to using the save button, while the autosave updates upon starting the game and whenever the time is advanced.  Upon starting the game, the player is able to select a save file to start from - if the save file has data it will be loaded, otherwise the default start will be loaded.  The player may also manually load a save file at any point prior to finishing the game.
+    - The game maintains three save files and one autosave in local storage.  The save files are manually saved to using the save button, while the autosave updates upon starting the game and whenever the time is advanced.  Upon starting the game, the player is able to select a save file to start from - if the save file has data it will be loaded, otherwise the default start will be loaded.  The player may also manually load a save file at any point prior to finishing the game.
 - Auto-save system
-- -  The autosave updates upon starting the game and whenever the time is advanced. The player can select the Autosave file in the loading menu, to continue where the player left off.
+    -  The autosave updates upon starting the game and whenever the time is advanced. The player can select the Autosave file in the loading menu, to continue where the player left off.
 - Infinite Undos and Redos  
-- - Undos and Redos are implemented as a pair of stacks.  Sowing and reaping plants and advancing time add a snapshot of the game state to the undo stack in the form of an ArrayBuffer as depicted above.  Pressing the undo button moves the top of the undo stack to the redo stack and loads the game state from the new top of the undo stack.  Pressing the redo button moves the top of the redo stack to the undo stack, then loads from the new top of the undo stack as before.  Adding a new snapshot to the undo stack by any means other than the redo button clears the redo stack.  
+    - Undos and Redos are implemented as a pair of stacks.  Sowing and reaping plants and advancing time add a snapshot of the game state to the undo stack in the form of an ArrayBuffer as depicted above.  Pressing the undo button moves the top of the undo stack to the redo stack and loads the game state from the new top of the undo stack.  Pressing the redo button moves the top of the redo stack to the undo stack, then loads from the new top of the undo stack as before.  Adding a new snapshot to the undo stack by any means other than the redo button clears the redo stack.  
 
 
 ### Reflection
@@ -98,33 +130,33 @@ There were no significant changes to our plans from last Devlog, save that our T
 
 - Controlled Character Moves Across a 2d Grid
 
-The game occurs on a 5*5 2D Grid. Arrays are used to store all values related to a given cell.
+    - The game occurs on a 5*5 2D Grid. Arrays are used to store all values related to a given cell.
 The player can move between cells using the arrow keys, which adjusts the character's coordinates by one in the relevant direction, 
 then moves the character sprite by the length of one cell.
 
 - Time Advances Manually
 
-There is a button onscreen that advances time for all the cells, updating them based on rules explained below.  Time does not pass while the player is walking around.  
+    - There is a button onscreen that advances time for all the cells, updating them based on rules explained below.  Time does not pass while the player is walking around.  
 
 - Proximity-Based Reaping and Sowing
 
-Player can select on the nearby cell and sow a new plant or reap a fully grown plant. If no cell is selected, it will sow a new plant or reap on the player cell. 
+    - Player can select on the nearby cell and sow a new plant or reap a fully grown plant. If no cell is selected, it will sow a new plant or reap on the player cell. 
 
 - Grid Cells Have Sun And Water Levels
 
-Each cell has both a sun level and a water level, displayed as an integer value.  When the "Next Day" button is clicked, the sun levels of each cell is randomized between 0 and 5.  Additionally, each cell gains between 0 and 3 water level per turn, and loses 2 water level if it has both at least 1 sun and a plant of growth stage 0 (just planted) or 1 (partially grown).  
+    - Each cell has both a sun level and a water level, displayed as an integer value.  When the "Next Day" button is clicked, the sun levels of each cell is randomized between 0 and 5.  Additionally, each cell gains between 0 and 3 water level per turn, and loses 2 water level if it has both at least 1 sun and a plant of growth stage 0 (just planted) or 1 (partially grown).  
 
 - Each Plant Has Both a Type and a Growth Level
 
-There are three kinds of plants - mushrooms, grass, and pumpkins.  Each plant has three stages of growth, and a different value when reaped, which can only be done when the plant is fully grown.  
+    - There are three kinds of plants - mushrooms, grass, and pumpkins.  Each plant has three stages of growth, and a different value when reaped, which can only be done when the plant is fully grown.  
 
 - Plant Growth is Governed by Simple Spatial Rules
 
-When the player clicks the "next day" button, if a cell has a plant that is not fully grown, and the cell has at least 1 sun and 2 water, then the plant's growth stage increases by 1 (changing the plant's sprite) and the water level of the cell decreases by 2.
+    - When the player clicks the "next day" button, if a cell has a plant that is not fully grown, and the cell has at least 1 sun and 2 water, then the plant's growth stage increases by 1 (changing the plant's sprite) and the water level of the cell decreases by 2.
 
 - Scenario is Completed When Some Condition is Satisfied
 
-The objective of the game is earn money.  The player starts with $10, and must sow different plants, wait for them to grow, and harvest them for money. Upon reaching $100, the player has completed the scenario. 
+    - The objective of the game is earn money.  The player starts with $10, and must sow different plants, wait for them to grow, and harvest them for money. Upon reaching $100, the player has completed the scenario. 
 
 ### Reflection
 
