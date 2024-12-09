@@ -4,5 +4,13 @@
     "description": "Phaser Valley is a 2D farming simulation game. Players manage crops like mushrooms, grass, and pumpkins to earn money. Features include language settings, arrow key navigation, sun and water interactions for growth, multiple save files, auto-save, offline play, and is developed with Phaser3.",
 
     "start_url": "index.html",
-    "display": "standalone"
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "assets/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ]
 }
