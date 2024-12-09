@@ -1,11 +1,54 @@
 # CMPM-121-Phaser-Valley
 
 ## Table of Contents
-- [Devlog F.1](#F.1)
-- [Devlog F.0](#F.0)
-- [Devlog Team](#Team)
+- [Devlog F.2](#Devlog Entry F.2 - 12/8/2024)
+- [Devlog F.1](#Devlog Entry F.1 - 12/6/2024)
+- [Devlog F.0](#Devlog Entry F.0 - 12/3/2024)
+- [Devlog Team](#Devlog Entry - 11/13/2024)
 
-## Devlog Entry F.1 - 12/6/2024 {#F.1}
+## Devlog Entry F.2 - 12/8/2024
+
+### Requirements
+
+- Character Moves on 2d Grid  
+    - Same as last entry  
+- Time Advances Manually  
+    - Same as last entry  
+- Proximity-Based Reaping and Sowing  
+    - Same as last entry  
+- Grid Cells Have Sun And Water Levels  
+    - Same as last entry  
+- Each Plant Has Both a Type and a Growth Level  
+    - Same as last entry  
+- Plant Growth is Governed by Simple Spatial Rules  
+    - Small change the on the plant growth conditions
+- Scenario is Completed When Some Condition is Satisfied  
+    - Same as last entry  
+- Cell Information is Stored as an Array of Structs or a Struct of Arrays  
+    - Same as last entry
+- Multiple Save Files and Autosaving  
+    - Same as last entry
+- Auto-save system
+    -  Same as last entry
+- Infinite Undos and Redos  
+    - Same as last entry
+- External DSL for scenario designs
+    - The design of external DSL for scenario design utilizes YAML. 
+```
+plant:
+    - type: none
+      cost: 0
+      price: 0
+      sunNeed: 0
+      waterNeed: 0
+      maxGrowth: 0
+```
+- Internal DSL for plant types and growth conditions
+    - Work In Progress
+- Switch to an alternate platform
+    - Work In Progress
+
+## Devlog Entry F.1 - 12/6/2024
 
 ### Requirements
 
@@ -36,18 +79,20 @@ title Game State Buffer
 ```
 
 - - Each cell is represented by a 2 byte integer from 0000 to 10532, organized as follows - the thousands digit represents the cell's water level (0-10), the hundreds digit represents the cell's light level (0-5), the tens digit represents the index of the plant in the cell (0-3), and the ones digit represents the growth stage of the plant (0-2).  A 0 in the tens place is interpreted as the absence of a plant.
-
-- Infinite Undos and Redos  
-- - Undos and Redos are implemented as a pair of stacks.  Sowing and reaping plants and advancing time add a snapshot of the game state to the undo stack in the form of an ArrayBuffer as depicted above.  Pressing the undo button moves the top of the undo stack to the redo stack and loads the game state from the new top of the undo stack.  Pressing the redo button moves the top of the redo stack to the undo stack, then loads from the new top of the undo stack as before.  Adding a new snapshot to the undo stack by any means other than the redo button clears the redo stack.  
 - Multiple Save Files and Autosaving  
 - - The game maintains three save files and one autosave in local storage.  The save files are manually saved to using the save button, while the autosave updates upon starting the game and whenever the time is advanced.  Upon starting the game, the player is able to select a save file to start from - if the save file has data it will be loaded, otherwise the default start will be loaded.  The player may also manually load a save file at any point prior to finishing the game.
+- Auto-save system
+- -  The autosave updates upon starting the game and whenever the time is advanced. The player can select the Autosave file in the loading menu, to continue where the player left off.
+- Infinite Undos and Redos  
+- - Undos and Redos are implemented as a pair of stacks.  Sowing and reaping plants and advancing time add a snapshot of the game state to the undo stack in the form of an ArrayBuffer as depicted above.  Pressing the undo button moves the top of the undo stack to the redo stack and loads the game state from the new top of the undo stack.  Pressing the redo button moves the top of the redo stack to the undo stack, then loads from the new top of the undo stack as before.  Adding a new snapshot to the undo stack by any means other than the redo button clears the redo stack.  
+
 
 ### Reflection
 
 There were no significant changes to our plans from last Devlog, save that our Tools Lead JC finally set up deno on the repository.  Hasn't exactly been a lot of time to end up changing plans otherwise - Typescript remains the most viable change option in terms of engines.
 
 
-## Devlog Entry F.0 - 12/3/2024 {#F.0}
+## Devlog Entry F.0 - 12/3/2024
 
 ### Requirements
 
@@ -86,12 +131,12 @@ The objective of the game is earn money.  The player starts with $10, and must s
 We determined that Tiled was not necessary to our project, so we have decided to cut it from the project.  In addition, Haorong has been promoted to Design Lead, as Erik has been MIA for the past few weeks.  
 
 
-## Devlog Entry - 11/13/2024 {#Team}
+## Devlog Entry - 11/13/2024
 ### Introducing the Team
 
-- Erik Lu / kami-lel: Design Lead
+- Erik Lu / kami-lel: Design Backup Lead
 
-- Haorong Rong / hrong1: Design Backup Lead
+- Haorong Rong / hrong1: Design Lead
 
 - Ian Wallace / 14N-W4774c3: Engine Lead
 
