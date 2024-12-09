@@ -28,6 +28,8 @@
 
 ### Reflection
 
+Now our game are support three different written languages. Players can switch the language setting on the start screen. For making the game work on mobile, we don't have much idea about that, and I don't think we still have enough time to get it done.
+
 ## Devlog Entry F.2 - 12/8/2024
 
 ### Requirements
@@ -105,6 +107,8 @@ landColor: 0x926829
 
 ### Reflection
 
+Now we think we have enough time to complete all the software requirements in F2, so we decided to complete only some of them. Also, we have encounter problem on importing and exporting files in typescript when switching platform. And still haven't found a solution for that.
+
 ## Devlog Entry F.1 - 12/6/2024
 
 ### Requirements
@@ -134,7 +138,6 @@ title Game State Buffer
 6-7: "Days"
 8-57: "Grid cells, each cell is 2 bytes"
 ```
-
 - - Each cell is represented by a 2 byte integer from 0000 to 10532, organized as follows - the thousands digit represents the cell's water level (0-10), the hundreds digit represents the cell's light level (0-5), the tens digit represents the index of the plant in the cell (0-3), and the ones digit represents the growth stage of the plant (0-2).  A 0 in the tens place is interpreted as the absence of a plant.
 - Multiple Save Files and Autosaving  
     - The game maintains three save files and one autosave in local storage.  The save files are manually saved to using the save button, while the autosave updates upon starting the game and whenever the time is advanced.  Upon starting the game, the player is able to select a save file to start from - if the save file has data it will be loaded, otherwise the default start will be loaded.  The player may also manually load a save file at any point prior to finishing the game.
