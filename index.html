@@ -10,7 +10,7 @@
     <script>
       if ('serviceWorker' in navigator) {
           window.addEventListener('load', function() {
-              navigator.serviceWorker.register('/sw.js', {scope: '/'}).then(function(registration) {
+              navigator.serviceWorker.register('/ucsc-cmpm121-phaser-valley/sw.js', {scope: '/ucsc-cmpm121-phaser-valley/'}).then(function(registration) {
                   console.log('sw.js registration successful, scope=', registration.scope);  // HACK
               }, function(err) {
                   console.log('Error: sw.js fail to register: ', err);
@@ -24,9 +24,9 @@
     <!-- Include js-yaml -->
     <script src="//cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
     <!-- Include translation files-->
-    <script src="/locales/en/translations.js"></script>
-    <script src="/locales/ch/translations.js"></script>
-    <script src="/locales/ar/translation.js"></script> 
+    <script src="locales/en/translations.js"></script>
+    <script src="locales/ch/translations.js"></script>
+    <script src="locales/ar/translation.js"></script> 
     <!-- Include the game script -->
     <script src="src/prefabs/languageManager.js"></script>
     <script src="src/scenes/Load.js"></script>
@@ -40,15 +40,6 @@
   </head>
   <body>
     <div id="phaser-game"></div>
-
-  <div id="btn-container">
-    <button id="left">L</button>
-    <button id="up">U</button>
-    <button id="down">D</button>
-    <button id="right">R</button>
-  </div>
-
     <span id="info"></span>
   </body>
-  <footer><div id=version></div></footer>
 </html>
