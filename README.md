@@ -18,9 +18,9 @@
 - [F2.a - F2.c]
     - Same as last entry
 - Game Internationalized
-    - 
+    - Each translatable string is referenced by a key, and the LanguageManager fetches the appropriate translation based on the current language setting. When adding support for a new language, developers just need to add the translation.js for the new language to the loacales folder and add a new else if statement in LanguageManager.
 - Localized And Support Three Different Written Languages
-    - 
+    - Our game supports three languages: English, Arabic, and Chinese. For English, it is the primary language of the development team. For Arabic, which is the right-to-left script, we use Deepl to assist with translations. For Chinese, which is the logographic script, this is my native language, so I translated it by myself. To change the language in the game, players can do that by selecting the language buttons that are available on the main menu. These buttons are labeled with the respective language names. 
 - Installable on a Smartphone-class Mobile Device
     - Work In Progress
 - The game launches and runs even when the device is not connected to the internet
