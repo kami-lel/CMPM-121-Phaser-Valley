@@ -1,10 +1,25 @@
 # CMPM-121-Phaser-Valley
 
 ## Table of Contents
+- [Devlog F.3](#Devlog-Entry-F.3---12/8/2024)
 - [Devlog F.2](#Devlog-Entry-F.2---12/8/2024)
 - [Devlog F.1](#Devlog-Entry-F.1---12/6/2024)
 - [Devlog F.0](#Devlog-Entry-F.0---12/3/2024)
 - [Devlog Team](#Devlog-Entry---11/13/2024)
+
+## Devlog Entry F.3 - 12/8/2024
+
+### Requirements
+- Game Internationalized
+    - 
+- Localized And Support Three Different Written Languages
+    - 
+- Installable on a Smartphone-class Mobile Device
+    - 
+- The game launches and runs even when the device is not connected to the internet
+    - 
+
+### Reflection
 
 ## Devlog Entry F.2 - 12/8/2024
 
@@ -34,6 +49,7 @@
     - Same as last entry
 - External DSL for scenario designs(YAML)
     - The external DSL defines key components like the grid config, win conditions, plant info, player position, and land color. The grid config defines how many rows and columns the grid will have, as well as the size of each cell. The win conditions specify how many money the player need to earn. Plant include information on plant type, sowing price, selling price, growing conditions, and maximum number of growth times. Player positions determines the starting position of the player at the beginning of the game. Lastly, landColor, the color of the cell
+
     **Scenario File**
 ```
 GridConfig:
@@ -79,6 +95,8 @@ landColor: 0x926829
     - Work In Progress
 - Switch to an alternate platform
     - Work In Progress
+
+### Reflection
 
 ## Devlog Entry F.1 - 12/6/2024
 
