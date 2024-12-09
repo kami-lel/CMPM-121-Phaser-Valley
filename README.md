@@ -1,10 +1,10 @@
 # CMPM-121-Phaser-Valley
 
 ## Table of Contents
-- [Devlog F.2](#Devlog Entry F.2 - 12/8/2024)
-- [Devlog F.1](#Devlog Entry F.1 - 12/6/2024)
-- [Devlog F.0](#Devlog Entry F.0 - 12/3/2024)
-- [Devlog Team](#Devlog Entry - 11/13/2024)
+- [Devlog F.2](#Devlog-Entry-F.2---12/8/2024)
+- [Devlog F.1](#Devlog-Entry F.1---12/6/2024)
+- [Devlog F.0](#Devlog-Entry F.0---12/3/2024)
+- [Devlog Team](#Devlog-Entry---11/13/2024)
 
 ## Devlog Entry F.2 - 12/8/2024
 
