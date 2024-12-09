@@ -2,6 +2,7 @@
 // debug with extreme prejudice
 "use strict";
 
+
 // game config
 const config = {
   parent: "phaser-game", // for info text
@@ -17,6 +18,10 @@ const config = {
     },
   },
   scene: [Load, Title, ContinueMenu, LoadMenu, SaveMenu, Credits, Play, Win],
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  }
 };
 
 var cursors;
