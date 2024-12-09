@@ -2,7 +2,6 @@
 // debug with extreme prejudice
 "use strict";
 
-
 // game config
 const config = {
   parent: "phaser-game", // for info text
@@ -21,7 +20,7 @@ const config = {
   scale: {
     mode: Phaser.Scale.FIT
   }
-};
+}
 
 var cursors;
 const SCALE = 2.0;
