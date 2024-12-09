@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo.png">
+    <title>Phaser Valley</title>
+
+    <!-- register service worker for PWA -->
+    <script>
+      if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+              navigator.serviceWorker.register('/ucsc-cmpm121-phaser-valley/sw.js', {scope: '/ucsc-cmpm121-phaser-valley/'}).then(function(registration) {
+                  console.log('sw.js registration successful, scope=', registration.scope);  // HACK
+              }, function(err) {
+                  console.log('Error: sw.js fail to register: ', err);
+              });
+          });
+      }
+    </script>
+
+    <!-- Include Phaser -->
+    <script src="lib/phaser.js"></script>
+    <!-- Include js-yaml -->
+    <script src="//cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
+    <!-- Include translation files-->
+    <script src="locales/en/translations.js"></script>
+    <script src="locales/ch/translations.js"></script>
+    <script src="locales/ar/translation.js"></script> 
+    <!-- Include the game script -->
+    <script src="src/prefabs/languageManager.js"></script>
+    <script src="src/scenes/Load.js"></script>
+    <script src="src/scenes/Title.js"></script>
+    <script src="src/prefabs/Player.js"></script>
+    <script src="src/scenes/Play.js"></script>
+    <script src="src/scenes/Win.js"></script>
+    <script src="src/main.js"></script>
+
+    <link rel="manifest" href="manifest.json"/>
+  </head>
+  <body>
+    <div id="phaser-game"></div>
+    <span id="info"></span>
+  </body>
+</html>
