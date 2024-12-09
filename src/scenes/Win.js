@@ -4,7 +4,6 @@ class Win extends Phaser.Scene {
         super("winScene")
     }
 
-
     create(){
         const translations = getTranslations();
         let textConfig = {

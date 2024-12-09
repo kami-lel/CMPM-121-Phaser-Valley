@@ -20,7 +20,7 @@
 - Game Internationalized
     - Each translatable string is referenced by a key, and the LanguageManager fetches the appropriate translation based on the current language setting. When adding support for a new language, developers just need to add the translation.js for the new language to the loacales folder and add a new else if statement in LanguageManager.
 - Localized And Support Three Different Written Languages
-    - Our game supports three languages: English, Arabic, and Chinese. For English, it is the primary language of the development team. For Arabic, which is the right-to-left script, we use Deepl to assist with translations. For Chinese, which is the logographic script, this is my native language, so I translated it by myself. To change the language in the game, players can do that by selecting the language buttons that are available on the main menu. These buttons are labeled with the respective language names. 
+    - Our game supports three languages: English, Arabic, and Chinese. English is the primary language of the development team. For Arabic, which is the right-to-left script, we use Deepl to assist with translations. For Chinese, a logographic script, this is my native language, so I translated it by myself. To change the language in the game, players can do that by selecting the language buttons that are available on the main menu. These buttons are labeled with the respective language names. 
 - Installable on a Smartphone-class Mobile Device
     - Work In Progress
 - The game launches and runs even when the device is not connected to the internet
@@ -28,7 +28,7 @@
 
 ### Reflection
 
-Now our game are support three different written languages. Players can switch the language setting on the start screen. For making the game work on mobile, we don't have much idea about that, and I don't think we still have enough time to get it done.
+Now our game supports three different written languages. Players can switch the language setting on the start screen. For making the game work on mobile, we don't have much idea about that, and I don't think we still have enough time to get it done.
 
 ## Devlog Entry F.2 - 12/8/2024
 
@@ -107,7 +107,9 @@ landColor: 0x926829
 
 ### Reflection
 
-Now we think we have enough time to complete all the software requirements in F2, so we decided to complete only some of them. Also, we have encounter problem on importing and exporting files in typescript when switching platform. And still haven't found a solution for that.
+We have encountered problems with importing and exporting files in typescript when switching platforms.  As we don't have much time remaining to finish this project, we were forced to abandon platform switching.
+
+Engine Lead note: I'll be honest.  I have little to no experience dealing with manual intra-module function transfer, and as far as I can tell that's what the errors I'm getting are trying to do.  Worst of all, I've yet to find information on the internet that doesn't tell me to do what I'm doing - you know, the thing that doesn't work.
 
 ## Devlog Entry F.1 - 12/6/2024
 

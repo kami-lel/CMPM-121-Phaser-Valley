@@ -3,11 +3,11 @@ let currentLanguage = 'en';
 
 function getTranslations() {
     if (currentLanguage === 'ch') {
-      return window.chTranslations;
+      return globalThis.chTranslations;
     }else if (currentLanguage === 'ar'){
-      return window.arTranslations;
+      return globalThis.arTranslations;
     }
-    return window.enTranslations;
+    return globalThis.enTranslations;
 }
 
 function switchLanguage(lang) {
