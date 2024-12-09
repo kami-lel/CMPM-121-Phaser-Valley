@@ -19,8 +19,7 @@ const config = {
   },
   scene: [Load, Title, ContinueMenu, LoadMenu, SaveMenu, Credits, Play, Win],
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH
+    mode: Phaser.Scale.FIT
   }
 };
 
